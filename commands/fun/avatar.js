@@ -38,7 +38,7 @@ module.exports = {
             .get(user.id)
             .displayAvatarURL({ format: "png", size: 1024, dynamic: true })
         );
-        Embed.setColor(`#EFFF00`);
+        Embed.setColor(process.env.COLOR);
         return message.channel.send(Embed);
       }
     }
