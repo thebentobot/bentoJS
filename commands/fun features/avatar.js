@@ -3,7 +3,7 @@ const Discord = require("discord.js");
 
 module.exports = {
     name: 'avatar',
-    category: 'fun',
+    category: 'fun features',
     description: 'Display avatar for the specific user',
     usage: `avatar <@user>`,
     run: async (client, message, args) => {
