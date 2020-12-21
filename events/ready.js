@@ -6,7 +6,7 @@ module.exports = client => {
         activity: {
             name: 'Bannerbot out here',
             type: 'STREAMING',
-            url: 'https://www.youtube.com/watch?v=_qJEoSa3Ie0'
+            url: 'https://www.youtube.com/watch?v=ocRVCN8hz_Q'
         }
     });
 }

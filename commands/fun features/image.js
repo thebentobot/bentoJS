@@ -15,7 +15,7 @@ module.exports = {
     if (command === 'image') {
       image(message, parts);
 		if (!args.length) {
-			return message.channel.send('You need to supply a search term!');
+			return message.channel.send('You need to provide a search input!');
 		}
 
 		function image(message, parts) {
@@ -33,7 +33,7 @@ module.exports = {
 
   request(options, function(error, response, responseBody) {
     if (error) {
-      return;
+      return message.channel.send('An error occured when searching for an image. Try again later or with another input.');
     }
 
     $ = cheerio.load(responseBody);
@@ -45,7 +45,7 @@ module.exports = {
       .map((v, i) => links.eq(i).attr("href"));
 
     if (!urls.length) {
-      return;
+      return message.channel.send('No images found.');
     }
 
     // Send result
