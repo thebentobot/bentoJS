@@ -9,7 +9,7 @@ module.exports = {
     description: 'Urban dictionairy',
     usage: `urban <search input>`,
     run: async (client, message, args) => {
-        if (!message.content.startsWith(process.env.PREFIX) || message.author.bot)
+	if (!message.content.startsWith(process.env.PREFIX) || message.author.bot)
       return;
     var args = message.content.slice(process.env.PREFIX.length).split(/ +/);
     const command = args.shift().toLowerCase();
