@@ -16,7 +16,7 @@ module.exports = {
     const command = args.shift().toLowerCase();
 
     if (cooldown.has(message.author.id)) {
-      message.reply('Stop spamming for fuck sake. If needed, go here https://www.google.com/imghp?hl=en')
+      message.channel.send(`Stop spamming ${message.author}. \nIf needed, go here https://www.google.com/imghp?hl=en`).then(m => m.delete({timeout: 10000}));
     } else {
       if (command === 'image') {
         image(message, parts);
@@ -49,7 +49,7 @@ module.exports = {
           .map((v, i) => links.eq(i).attr("href"));
     
           if (!urls.length) {
-            return message.channel.send('No images found.');
+            return message.channel.send('No images found based on your search input.');
           }
     
           // Send result
