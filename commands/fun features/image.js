@@ -1,7 +1,9 @@
-const cheerio = require('cheerio');
-const request = require('request');
+//const cheerio = require('cheerio');
+//const request = require('request');
 
-const cooldown = new Set();
+//const cooldown = new Set();
+
+const gis = require('g-i-s');
 
 module.exports = {
     name: 'image',
@@ -9,59 +11,24 @@ module.exports = {
     description: 'Searches for random images based on the search input',
     usage: `image <search input>`,
     run: async (client, message, args) => {
-    if (!message.content.startsWith(process.env.PREFIX) || message.author.bot)
-    return;
-    var args = message.content.slice(process.env.PREFIX.length).split(/ +/);
-    var parts = message.content.split(" ")
-    const command = args.shift().toLowerCase();
+      const query = args.join(" ")
+      if(!query) return message.channel.send('You need to provide a search input!').then(m => m.delete({timeout: 5000}));
+      gis(query, logResults);
 
-    if (cooldown.has(message.author.id)) {
-      message.channel.send(`Stop spamming ${message.author}. \nIf needed, go here https://www.google.com/imghp?hl=en`).then(m => m.delete({timeout: 10000}));
-    } else {
-      if (command === 'image') {
-        image(message, parts);
-        if (!args.length) {
-          return message.channel.send('You need to provide a search input!');
+      function logResults(error, results) {
+        const index = Math.floor(Math.random() * results.length);
+        if (error) {
+          console.log(error);
+          message.channel.send('Error');
         }
-  
-        function image(message, parts) {
-          var search = parts.slice(1).join('');
-          var options = {
-          url: "http://results.dogpile.com/serp?qc=images&q=" + search,
-          method: "GET",
-          headers: {
-            Accept: "text/html",
-            "User-Agent": "Chrome"
-          }
-          };
-    
-          request(options, function(error, response, responseBody) {
-          if (error) {
-            return message.channel.send('An error occured when searching for an image. Try again later or with another input.');
-          }
-    
-          $ = cheerio.load(responseBody);
-    
-          var links = $(".image a.link");
-    
-          var urls = new Array(links.length)
-          .fill(0)
-          .map((v, i) => links.eq(i).attr("href"));
-    
-          if (!urls.length) {
-            return message.channel.send('No images found based on your search input.');
-          }
-    
-          // Send result
-          message.channel.send(urls[Math.floor(Math.random() * urls.length)]);
-          });
-
-          cooldown.add(message.author.id);
-          setTimeout(() => {
-            cooldown.delete(message.author.id)
-          }, 20000); // 20 seconds
+        else {
+          //console.log(JSON.stringify(results, null, '  '));
+          try {
+          message.channel.send(results[index].url);
+        } catch (err) {
+          message.channel.send('No images found based on your search input.');
+        }
         }
       }
-    }
   }
 }
