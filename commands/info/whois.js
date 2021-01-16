@@ -1,4 +1,5 @@
 const { MessageEmbed } = require('discord.js');
+const trim = (str, max) => (str.length > max ? `${str.slice(0, max - 3)}...` : str);
 
 module.exports = {
     name: 'whois',
@@ -24,7 +25,7 @@ module.exports = {
             .addField('Joined server at', member.joinedAt)
             //.addField('Last message', member.lastMessage.content)
             .addField('Highest role', member.roles.highest)
-            .addField('All roles', member.roles.cache.map(r => `${r}`).join(' | '));
+            .addField('All roles', trim(member.roles.cache.map(r => `${r}`).join(' | '), 1024));
             return message.channel.send(embed).catch(err => console.error(err));
         } catch(err) {
             const embed = new MessageEmbed()

@@ -28,17 +28,17 @@ module.exports = {
 
 		const [answer] = list;
 
-    const exampleEmbed = new Discord.MessageEmbed()
-    .setColor(process.env.COLOR)
+    	const exampleEmbed = new Discord.MessageEmbed()
+    	.setColor(process.env.COLOR)
     	.setAuthor('Urban Dictionary', 'https://is4-ssl.mzstatic.com/image/thumb/Purple111/v4/81/c8/5a/81c85a6c-9f9d-c895-7361-0b19b3e5422e/mzl.gpzumtgx.png/246x0w.png', 'https://www.urbandictionary.com/')
-			.setTitle(answer.word)
-			.setURL(answer.permalink)
+		.setTitle(answer.word)
+		.setURL(answer.permalink)
     	.setTimestamp()
-			.addFields(
-				{ name: 'Definition', value: trim(answer.definition, 1024) },
-				{ name: 'Example', value: trim(answer.example, 1024) },
-				{ name: 'Rating', value: `${answer.thumbs_up} :thumbsup: ${answer.thumbs_down} :thumbsdown:` },
-			);
+		.addFields(
+		{ name: 'Definition', value: trim(answer.definition, 1024) },
+		{ name: 'Example', value: trim(answer.example, 1024) },
+		{ name: 'Rating', value: `${answer.thumbs_up} :thumbsup: ${answer.thumbs_down} :thumbsdown:` },
+		);
 		message.channel.send(exampleEmbed);
 	}
   }
