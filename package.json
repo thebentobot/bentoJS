@@ -17,11 +17,13 @@
     "fs": "0.0.1-security",
     "g-i-s": "^2.1.6",
     "moment": "^2.29.1",
+    "moment-timezone": "^0.5.32",
     "mongoose": "^5.9.11",
     "node-fetch": "^2.6.1",
     "nodemon": "^2.0.4",
     "querystring": "^0.2.0",
     "request": "^2.88.2",
+    "timezone": "^1.0.23",
     "utf8": "^3.0.0"
   }
 }
