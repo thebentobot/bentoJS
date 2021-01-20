@@ -11,7 +11,7 @@ module.exports = {
     name: 'weather',
     category: 'fun features',
     description: 'Displays info about the weather at the city saved for the user, or at the specified city.',
-    usage: `weather [location, or save] [location]`,
+    usage: `weather [city, or save] [city]`,
     run: async (client, message, args) => {
         //vi skal huske at lave en command der tjekker om personen har gemt location
         //if (!args[0])
