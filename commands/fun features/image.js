@@ -1,8 +1,3 @@
-//const cheerio = require('cheerio');
-//const request = require('request');
-
-//const cooldown = new Set();
-
 const gis = require('g-i-s');
 
 module.exports = {

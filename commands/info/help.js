@@ -46,7 +46,7 @@ async function helpMSG(client, message) {
         .setTitle('Help')
         .setThumbnail(client.user.avatarURL())
         .setDescription(`For a full list of commands, please type \`${guildDB.prefix}commands\` \n\nTo see more info about a specific command, please type \`${guildDB.prefix}help <command>\` without the \`<>\``)
-        .addField('About', "Cock and ball torture")
+        .addField('About', "A Discord bot for chat moderation and fun features you did not know you needed on Discord.")
         //.addField('Links', "[YouTube](https://www.youtube.com/channel/UCeujGfgR1JARTyQyfnlQBrA)\n[Twitch](https://www.twitch.tv/sleeplesskyru)\n[Twitter](https://twitter.com/SleeplessKyruRL)\n[Sleepless' Main Discord Server](https://discord.gg/WKDeFzz)")
         .setFooter('Created by Banner#1017');
     message.channel.send(embed);

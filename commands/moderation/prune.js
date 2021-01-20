@@ -4,6 +4,8 @@ module.exports = {
     description: 'Removes messages',
     usage: `prune <1-100>`,
     run: async (client, message, args) => {
+        if (!message.member.hasPermission('MANAGE_MESSAGES'))
+            return message.channel.send('You do not have permission to use this command.').then(m => m.delete({timeout: 5000}));
         message.delete()
         const Args = message.content.split(' ').slice(1); // All arguments behind the command name with the prefix
         const amount = Args.join(' '); // Amount of messages which should be deleted
