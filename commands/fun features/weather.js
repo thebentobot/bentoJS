@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 const utf8 = require('utf8');
 const moment = require('moment');
 const momentTz = require('moment-timezone');
-const geoTz = require('geo-tz')
+const tzlookup = require("tz-lookup");
 
 
 module.exports = {
@@ -117,8 +117,8 @@ module.exports = {
               return ex
             }
             function location (x, y) {
-              let loc = geoTz(x, y)
-              return loc[0]
+              let loc = tzlookup(x, y)
+              return loc
             }
             function toTimeZone(time, zone) {
               return moment(time, 'LT').tz(zone).format('LT');
