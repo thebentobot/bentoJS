@@ -39,7 +39,7 @@ module.exports = {
                 utc = localTime + localOffset
                 var time = utc + (1000 * x)
                 nd = new Date(time)
-                let ex = moment(nd).format ('LLLL')
+                let ex = moment(nd).format ('LLLL');
                 return ex
             }
             let time = localTime(answer.timezone)

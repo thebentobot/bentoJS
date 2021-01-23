@@ -8,7 +8,6 @@ const tzlookup = require("tz-lookup");
 const {flag, code, name, countries} = require('country-emoji');
 const { codeToName } = require('country-emoji/dist/lib');
 
-
 module.exports = {
     name: 'weather',
     category: 'fun features',

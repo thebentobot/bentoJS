@@ -10,7 +10,6 @@ module.exports = {
       const query = args.join(" ")
       if(!query) return message.channel.send('You need to provide a search input!').then(m => m.delete({timeout: 5000}));
       gis(query, logResults);
-
       function logResults(error, results) {
         const index = Math.floor(Math.random() * results.length);
         if (error) {
