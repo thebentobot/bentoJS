@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Guild = require('../models/guild');
+//const Command = require('../models/command');
 
 module.exports = async (client, message) => {
     if (message.author.bot) return;
@@ -37,9 +38,31 @@ module.exports = async (client, message) => {
     
     if (cmd.length === 0) return;
     
-    let command = client.commands.get(cmd);
-    if (!command) command = client.commands.get(client.aliases.get(cmd));
+    let command = client.commands.get(cmd) || client.commands.find(command => command.aliases && command.aliases.includes(cmd));
+    if (!command) command = client.commands.get(client.aliases.get(cmd));    
+
     
-    if (command)
+    if (command) {
         command.run(client, message, args);
+    }
+    
+   /*
+   if (command) {
+    {
+        command.run(client, message, args);
+    }
+  } else {
+    Command.findOne(
+        { guildID: message.guild.id, command: cmd },
+        async (err, data) => {
+          if (err) throw err;
+          if (data) {
+              return message.channel.send(data.content);
+          } else {
+              return message.channel.send(`This command does not exist.\nUse ${prefix}Commands for a list of all commands. \nIf it was supposed to be a custom tag, it does not exist on this server.`);
+        }
+      }
+    );
+  }
+  */
 };

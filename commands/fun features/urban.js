@@ -6,7 +6,7 @@ const trim = (str, max) => (str.length > max ? `${str.slice(0, max - 3)}...` : s
 module.exports = {
     name: 'urban',
     category: 'fun features',
-    description: 'Urban dictionairy',
+    description: 'Search for definitions on Urban dictionary',
     usage: `urban <search input>`,
     run: async (client, message, args) => {
 	if (!message.content.startsWith(process.env.PREFIX) || message.author.bot)

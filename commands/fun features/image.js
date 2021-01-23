@@ -1,12 +1,8 @@
-//const cheerio = require('cheerio');
-//const request = require('request');
-
-//const cooldown = new Set();
-
 const gis = require('g-i-s');
 
 module.exports = {
     name: 'image',
+    aliases: 'img',
     category: 'fun features',
     description: 'Searches for random images based on the search input',
     usage: `image <search input>`,
@@ -14,7 +10,6 @@ module.exports = {
       const query = args.join(" ")
       if(!query) return message.channel.send('You need to provide a search input!').then(m => m.delete({timeout: 5000}));
       gis(query, logResults);
-
       function logResults(error, results) {
         const index = Math.floor(Math.random() * results.length);
         if (error) {
