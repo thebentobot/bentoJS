@@ -137,10 +137,6 @@ module.exports = {
             .setTitle(`${answer.weather[0].main} in ${answer.name}, ${answer.sys.country}`)
             .setThumbnail(`http://openweathermap.org/img/w/${answer.weather[0].icon}.png`)
             .setTimestamp()
-            // vi skal fikse alle tider og være sikre på det er rigtigt.
-            // Tiderne passer med CPH DK men ikke med andre steder.
-            // vi skal gøre så det er den lokale tid for det sted den giver weather data på.
-            // tiderne kommer ud i unix UTC og calculates til ja læselig data
 		        .addFields(
               { name: 'Currently', value: `${capitalize(answer.weather[0].description)} ${weather(answer.weather[0].id)}`},
               { name: 'Temperature', value: `${Math.round(answer.main.temp)}°C (${Math.round(answer.main.temp * 9/5 + 32)}°F)\n Feels like ${Math.round(answer.main.feels_like)}°C (${Math.round(answer.main.feels_like * 9/5 + 32)}°F)`, inline: true },
