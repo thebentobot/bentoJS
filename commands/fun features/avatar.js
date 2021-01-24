@@ -7,8 +7,7 @@ module.exports = {
     description: 'Display avatar for the specific user',
     usage: `avatar <@user>`,
     run: async (client, message, args) => {
-        let Embed = new MessageEmbed;
-    var user;
+    let user;
       user = message.mentions.users.first(); //mentioned user, if any
       if (!user) {
         //if no one is mentioned
@@ -18,7 +17,7 @@ module.exports = {
           getuseravatar(user);
         } else {
           //if a user id IS specified (need developer mode on on discord to get it)
-          var id = args[0];
+          let id = args[0];
           client.users
             .fetch(id)
             .then(user => {
@@ -31,7 +30,7 @@ module.exports = {
         getuseravatar(user);
       }
       function getuseravatar(user) {
-        var Embed = new Discord.MessageEmbed();
+        let Embed = new Discord.MessageEmbed();
         Embed.setTitle(`${client.users.cache.get(user.id).tag}'s avatar!`);
         Embed.setImage(
           client.users.cache
