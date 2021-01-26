@@ -29,7 +29,6 @@ module.exports = {
                 //console.log(res)
                 let response = res
                 const answer = response
-                console.log(answer)
                 if(answer.hasOwnProperty('error')) {
                     return message.channel.send(`Your sign is invalid, try ${process.env.PREFIX}horoscope signs to see a list of signs`)
                 }
@@ -56,7 +55,6 @@ module.exports = {
                 //console.log(res)
                 let response = res
                 const answer = response
-                console.log(answer)
                 if(answer.hasOwnProperty('error')) {
                     return message.channel.send(`Your sign is invalid, try ${process.env.PREFIX}horoscope signs to see a list of signs`)
                 }
@@ -83,7 +81,6 @@ module.exports = {
                 //console.log(res)
                 let response = res
                 const answer = response
-                console.log(answer)
                 if(answer.hasOwnProperty('error')) {
                     return message.channel.send(`Your sign is invalid, try ${process.env.PREFIX}horoscope signs to see a list of signs`)
                 }
