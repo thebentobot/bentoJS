@@ -3,7 +3,7 @@ const mongo = require('../utils/mongoose');
 const Guild = require('../models/guild');
 const userServer = require('../models/userServer');
 const userGlobal = require('../models/userGlobal');
-//const Command = require('../models/command');
+const Command = require('../models/command');
 
 module.exports = async (client, message) => {
     if (message.author.bot) return;
@@ -165,12 +165,12 @@ module.exports = async (client, message) => {
     let command = client.commands.get(cmd) || client.commands.find(command => command.aliases && command.aliases.includes(cmd));
     if (!command) command = client.commands.get(client.aliases.get(cmd));    
 
-    
+    /*
     if (command) {
         command.run(client, message, args);
     }
-    
-   /*
+    */
+   
    if (command) {
     {
         command.run(client, message, args);
@@ -188,5 +188,5 @@ module.exports = async (client, message) => {
       }
     );
   }
-  */
+  
 };
