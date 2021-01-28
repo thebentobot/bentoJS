@@ -1,4 +1,5 @@
 const { MessageEmbed } = require('discord.js');
+const trim = (str, max) => (str.length > max ? `${str.slice(0, max - 3)}...` : str);
 
 function capitalize (s) {
     if (typeof s !== 'string') return ''
@@ -23,7 +24,7 @@ module.exports = {
             .addField('Server boost level', message.guild.premiumTier)
             .addField('Server boosters', message.guild.premiumSubscriptionCount, true)
             .addField('Text channels | Voice channels', `${message.guild.channels.cache.filter(channel => channel.type === 'text').size} | ${message.guild.channels.cache.filter(channel => channel.type === 'voice').size}`)
-            .addField('Amount of roles', message.guild.roles.cache.size)
+            .addField('Amount of roles', trim(message.guild.roles.cache.size))
             .addField('Created at', message.guild.createdAt)
             .addField('Emotes', `${message.guild.emojis.cache.size} in total.\n${message.guild.emojis.cache.array().filter(e=>e.animated).length} animated emotes.`);
 
