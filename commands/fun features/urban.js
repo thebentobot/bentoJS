@@ -5,7 +5,8 @@ const trim = (str, max) => (str.length > max ? `${str.slice(0, max - 3)}...` : s
 require('dotenv').config();
 
 module.exports = {
-    name: 'urban',
+	name: 'urban',
+	aliases: [],
     category: 'fun features',
     description: 'Search for definitions on Urban dictionary',
     usage: `urban <search input>`,

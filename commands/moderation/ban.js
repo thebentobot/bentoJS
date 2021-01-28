@@ -5,6 +5,7 @@ const Guild = require('../../models/guild');
 
 module.exports = {
     name: 'ban',
+    aliases: [],
     category: 'moderation',
     description: 'Bans the mentioned user from your server.',
     usage: `ban <@user> [reason]`,

@@ -3,9 +3,10 @@ const Discord = require("discord.js");
 
 module.exports = {
     name: 'avatar',
+    aliases: [],
     category: 'fun features',
     description: 'Display avatar for the specific user',
-    usage: `avatar <@user>`,
+    usage: `avatar <user>`,
     run: async (client, message, args) => {
     let user;
       user = message.mentions.users.first(); //mentioned user, if any

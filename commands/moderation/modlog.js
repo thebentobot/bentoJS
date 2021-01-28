@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 
 module.exports = {
     name: 'modlog',
+    aliases: [],
     category: 'moderation',
     description: 'Sets the channel that moderation actions will be logged in.',
     usage: `modlog <#channel>`,

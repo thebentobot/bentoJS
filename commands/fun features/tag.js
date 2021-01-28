@@ -13,6 +13,7 @@ function capitalize (s) {
 
 module.exports = {
     name: 'tag',
+    aliases: ['cc'],
     category: 'fun features',
     description: 'Create or call customly made commands',
     usage: `tag <add/delete/edit/info/list> <tag name> [tag content, text or attachment]`,

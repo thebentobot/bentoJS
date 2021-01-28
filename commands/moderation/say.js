@@ -2,6 +2,7 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = {
     name: 'say',
+    aliases: [],
     category: 'moderation',
     description: 'Bot repeats your message. If embed is added as an argument, the bot shows the message as en embed',
     usage: `say [embed] <input>`,

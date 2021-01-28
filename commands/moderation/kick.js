@@ -5,6 +5,7 @@ const Guild = require('../../models/guild');
 
 module.exports = {
     name: 'kick',
+    aliases: [],
     category: 'moderation',
     description: 'Kicks the mentioned user from your server.',
     usage: `kick <@user> [reason]`,

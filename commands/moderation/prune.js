@@ -1,5 +1,6 @@
 module.exports = {
     name: 'prune',
+    aliases: [],
     category: 'moderation',
     description: 'Removes messages',
     usage: `prune <1-100>`,

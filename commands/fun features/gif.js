@@ -4,6 +4,7 @@ const utf8 = require('utf8');
 
 module.exports = {
     name: 'gif',
+    aliases: [],
     category: 'fun features',
     description: 'Searches for random GIFs based on the search input',
     usage: `gif <search input>`,

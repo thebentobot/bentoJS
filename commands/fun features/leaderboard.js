@@ -9,7 +9,7 @@ module.exports = {
     aliases: ['ranking', 'rankings'],
     category: 'fun features',
     description: 'Shows your rank',
-    usage: `leaderboard [global]`,
+    usage: `leaderboard [global/praise]`,
     run: async (client, message, args) => {
         // leaderboard for the server
         if (!args.length) {

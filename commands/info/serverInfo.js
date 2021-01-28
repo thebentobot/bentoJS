@@ -8,6 +8,7 @@ function capitalize (s) {
 
 module.exports = {
     name: 'serverinfo',
+    aliases: [],
     category: 'info',
     description: 'Displays info about the current server.',
     usage: `serverInfo`,
