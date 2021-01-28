@@ -2,7 +2,7 @@ const gis = require('g-i-s');
 
 module.exports = {
     name: 'image',
-    aliases: 'img',
+    aliases: ['img'],
     category: 'fun features',
     description: 'Searches for random images based on the search input',
     usage: `image <search input>`,
