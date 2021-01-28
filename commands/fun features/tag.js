@@ -15,7 +15,7 @@ module.exports = {
     name: 'tag',
     category: 'fun features',
     description: 'Create or call customly made commands',
-    usage: `tag <tag name> [tag content]`,
+    usage: `tag <add/delete/edit/info/list> <tag name> [tag content, text or attachment]`,
     run: async (client, message, args) => {
       if (args[0]) {
         Command.findOne(

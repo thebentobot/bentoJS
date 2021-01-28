@@ -23,7 +23,7 @@ module.exports = {
       const embed = new Discord.MessageEmbed()
       .setColor(process.env.COLOR)
       .setTitle(`Rank for ${message.author.username}`)
-      .setThumbnail(message.author.avatarURL({ format: png, dynamic: true }))
+      .setThumbnail(message.author.avatarURL({ format: 'png', dynamic: true }))
       .setTimestamp()
       .addFields(
         { name: 'Server Level', value: userServer.level},
