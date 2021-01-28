@@ -5,7 +5,7 @@ module.exports = {
     name: 'praise',
     aliases: ['pr'],
     category: 'fun features',
-    description: 'Shows your rank',
+    description: 'Praise your friends :D',
     usage: `praise <user>`,
     run: async (client, message, args) => {
         try {

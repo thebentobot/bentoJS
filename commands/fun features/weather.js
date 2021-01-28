@@ -100,7 +100,7 @@ module.exports = {
     name: 'weather',
     aliases: [],
     category: 'fun features',
-    description: 'Displays info about the weather at the city saved for the user, or at the specified city. \n If it shows a city from another country than the one you expected, try to add a country code (e.g. US, GB, DE) beside the city (remember a comma after city), as shown below \n if it does not show up either, it may not be included in the weather API.',
+    description: 'Displays info about the weather at the city saved for the user, or at the specified city.\nIf it shows a city from another country than the one you expected, try to add a country code (e.g. US, GB, DE) beside the city (remember a comma after city), as shown below\nif it does not show up either, it may not be included in the weather API.',
     usage: `weather [save] <city>, [country code]`,
     run: async (client, message, args) => {
         let tokens = message.cleanContent.split(" ");

@@ -15,7 +15,7 @@ module.exports = {
     name: 'tag',
     aliases: ['cc'],
     category: 'fun features',
-    description: 'Create or call customly made commands',
+    description: 'Add, delete, edit tags, get info about a tag or a list of all tags on a server',
     usage: `tag <add/delete/edit/info/list> <tag name> [tag content, text or attachment]`,
     run: async (client, message, args) => {
       if (args[0]) {

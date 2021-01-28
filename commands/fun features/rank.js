@@ -8,7 +8,7 @@ module.exports = {
     name: 'rank',
     aliases: ['lvl', 'level', 'xp'],
     category: 'fun features',
-    description: 'Shows your rank',
+    description: 'Shows your rank level, xp and praises',
     usage: `rank [user]`,
     run: async (client, message, args) => {
       try {

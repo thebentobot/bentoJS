@@ -8,7 +8,7 @@ module.exports = {
     name: 'leaderboard',
     aliases: ['ranking', 'rankings'],
     category: 'fun features',
-    description: 'Shows your rank',
+    description: 'Shows the XP/LVL leaderboard for a server, globally for the bot, or global praises',
     usage: `leaderboard [global/praise]`,
     run: async (client, message, args) => {
         // leaderboard for the server
