@@ -80,7 +80,7 @@ module.exports = {
         })
 
         const amount = result.praise
-        return message.channel.send(`${message.author.username} you have praised <@${targetId}>! \n <@${targetId}> has ben praised ${amount} times, blessed\nYou can praise someone again in ${getTimeRemaining(moment(authorData.praiseDate).add(1, 'day')).hours} hours, ${getTimeRemaining(moment(authorData.praiseDate).add(1, 'day')).minutes} minutes and ${getTimeRemaining(moment(authorData.praiseDate).add(1, 'day')).seconds} seconds`)
+        return message.channel.send(`${message.author.username} you have praised <@${targetId}>! \n <@${targetId}> has been praised ${amount} times, blessed\nYou can praise someone again in ${getTimeRemaining(moment(authorData.praiseDate).add(1, 'day')).hours} hours, ${getTimeRemaining(moment(authorData.praiseDate).add(1, 'day')).minutes} minutes and ${getTimeRemaining(moment(authorData.praiseDate).add(1, 'day')).seconds} seconds`)
     } catch (err) {
         return message.channel.send(`Your input was invalid. Please specify a user.`)
     }
