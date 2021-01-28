@@ -102,10 +102,6 @@ module.exports = {
     description: 'Displays info about the weather at the city saved for the user, or at the specified city. \n If it shows a city from another country than the one you expected, try to add a country code (e.g. US, GB, DE) beside the city (remember a comma after city), as shown below \n if it does not show up either, it may not be included in the weather API.',
     usage: `weather [save] <city>, [country code]`,
     run: async (client, message, args) => {
-        //vi skal huske at lave en command der tjekker om personen har gemt location
-        //if (!args[0])
-        // check if user has saved location and post weather for that location
-        // if not, send you did not specify a location
         let tokens = message.cleanContent.split(" ");
         let keywords = "coding train";
         if (tokens.length > 1) {
