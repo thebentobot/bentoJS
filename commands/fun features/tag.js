@@ -129,7 +129,7 @@ module.exports = {
     if (!res) {
         return message.channel.send('Unable to DM tag list');
     }
-    var page = Math.ceil(res.length / 10)
+    var page = Math.ceil(res.length / 50)
     
     let embed = new Discord.MessageEmbed();
     embed.setTitle(`Tag list for ${message.guild.name}`)
@@ -139,8 +139,8 @@ module.exports = {
     let pg = parseInt(args[0]);
     if(pg != Math.floor(pg)) pg = 1;
     if(!pg) pg = 1;
-    let end = pg * 10
-    let start = (pg * 10) - 10;
+    let end = pg * 50
+    let start = (pg * 50) - 50;
 
     if (res.length === 0) {
         embed.addField('Error', 'No pages found!');
