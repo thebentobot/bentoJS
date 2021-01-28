@@ -1,6 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 const Guild = require('../../models/guild');
 const mongoose = require('mongoose');
+const { stringify } = require('querystring');
 
 module.exports = {
     name: 'help',
@@ -67,8 +68,9 @@ async function getCMD(client, message, input) {
         return message.channel.send(embed.setColor('#ff0000').setDescription(info));
     }
 
+    cmd.aliases = Array.prototype.slice.call(cmd.aliases)
     if (cmd.name) info = `**Command Name**: ${cmd.name}`
-    if (cmd.aliases) info += `\n**Aliases**: ${cmd.aliases.map(a => `\`{a}\``).join(', ')}`;
+    if (cmd.aliases) info += `\n**Aliases**: ${cmd.aliases.map(a => `\`${stringify({a}).slice(2)}\``).join(', ')}`;
     if (cmd.description) info += `\n**Description**: ${cmd.description}`;
     if (cmd.usage) {
         info += `\n**Usage**: ${guildDB.prefix}${cmd.usage}`;

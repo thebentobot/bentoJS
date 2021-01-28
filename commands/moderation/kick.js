@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const mongoose = require('mongoose');
-const User = require('../../models/user');
+const User = require('../../models/userServer');
 const Guild = require('../../models/guild');
 
 module.exports = {
