@@ -51,7 +51,7 @@ module.exports = {
 
             const hours = 24
             if (diffHours <= hours) {
-                return message.channel.send(`${message.author.username} you have already praised someone within the last ${hours} hours.\nYou can praise someone again in ${getTimeRemaining(moment(authorData.praiseDate).add(1, 'day')).hours} hours, ${getTimeRemaining(moment(authorData.praiseDate).add(1, 'day')).minutes} minutes and ${getTimeRemaining(moment(authorData.praiseDate).add(1, 'day')).seconds} seconds`);
+                return message.channel.send(`${message.author.username}, you can praise someone again in ${getTimeRemaining(moment(authorData.praiseDate).add(1, 'day')).hours} hours, ${getTimeRemaining(moment(authorData.praiseDate).add(1, 'day')).minutes} minutes and ${getTimeRemaining(moment(authorData.praiseDate).add(1, 'day')).seconds} seconds`);
             }
         }
 
@@ -80,7 +80,7 @@ module.exports = {
         })
 
         const amount = result.praise
-        return message.channel.send(`${message.author.username} you have praised <@${targetId}>! \n <@${targetId}> has been praised ${amount} times, blessed\nYou can praise someone again in ${getTimeRemaining(moment(authorData.praiseDate).add(1, 'day')).hours} hours, ${getTimeRemaining(moment(authorData.praiseDate).add(1, 'day')).minutes} minutes and ${getTimeRemaining(moment(authorData.praiseDate).add(1, 'day')).seconds} seconds`)
+        return message.channel.send(`${message.author.username} you have praised <@${targetId}>! \n <@${targetId}> has been praised ${amount} times, blessed\nYou can praise someone again in 24 hours.`)
     } catch (err) {
         return message.channel.send(`Your input was invalid. Please specify a user.`)
     }

@@ -9,7 +9,7 @@ module.exports = {
     aliases: ['ranking', 'rankings'],
     category: 'fun features',
     description: 'Shows the XP/LVL leaderboard for a server, globally for the bot, or global praises',
-    usage: `leaderboard [global/praise]`,
+    usage: `leaderboard [global/praise] [page number]`,
     run: async (client, message, args) => {
         // leaderboard for the server
         if (!args.length) {
@@ -71,7 +71,7 @@ module.exports = {
             embed.setThumbnail(client.user.displayAvatarURL({ dynamic: true, format: 'png'}))
             embed.setColor(process.env.COLOR);
 
-            let pg = parseInt(args[0]);
+            let pg = parseInt(args[1]);
             if(pg != Math.floor(pg)) pg = 1;
             if(!pg) pg = 1;
             let end = pg * 10
@@ -112,7 +112,7 @@ module.exports = {
             embed.setThumbnail(client.user.displayAvatarURL({ dynamic: true, format: 'png'}))
             embed.setColor(process.env.COLOR);
 
-            let pg = parseInt(args[0]);
+            let pg = parseInt(args[1]);
             if(pg != Math.floor(pg)) pg = 1;
             if(!pg) pg = 1;
             let end = pg * 10
