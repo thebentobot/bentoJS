@@ -46,7 +46,7 @@ module.exports = {
             }
         }
         if (!authorData.praiseDate) {
-            return message.channel.send(`${message.author.username} You haven't praised anyone before. Please praise an user, it's good for you.`)
+            return message.channel.send(`${message.author.username}, you haven't praised anyone before. Please praise a user, it's good for you.`)
         }
     }        
         try {
