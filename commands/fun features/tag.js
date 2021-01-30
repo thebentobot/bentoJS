@@ -5,6 +5,7 @@ const trim = (str, max) => (str.length > max ? `${str.slice(0, max - 3)}...` : s
 const Guild = require('../../models/guild');
 const Discord = require('discord.js');
 
+const regex = /[-!$%^&*()_+|~=`{}\[\]:";'<>?,.\/]/
 
 function capitalize (s) {
     if (typeof s !== 'string') return ''
@@ -23,10 +24,12 @@ module.exports = {
         { guildID: message.guild.id, command: args[1] });}
       if (args[0] === 'add') {
         if (!args[1])
-        return message.channel.send(`You did not specify a custom command name!`).then(m => m.delete({timeout: 5000}));
+        return message.channel.send(`You did not specify a custom command name!`)
+        if (regex.test(args[1]) == true)
+        return message.channel.send(`You can't add special characters to your command name`)
         let files = message.attachments.array();
         if (!args.slice(2).join(" ") && files.length < 1)
-        return message.channel.send(`No content specified!`).then(m => m.delete({timeout: 5000}));
+        return message.channel.send(`No content specified!`)
         let text = trim(args, 3, message.content);
         let fileUrl = files[0] ? files[0].url : '';
         if (fileUrl) text = [text, fileUrl].join('\n');
