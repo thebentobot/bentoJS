@@ -36,7 +36,6 @@ module.exports = {
       }
       let userID = args[0]
       const user = message.mentions.members.first() || await message.guild.members.fetch(userID)
-      //const member = guild.members.cache.get(user.id)
       if (args[0] = user) {
         const userServer = await userServerSchema.findOne({
           guildID: message.guild.id, userID: user.id

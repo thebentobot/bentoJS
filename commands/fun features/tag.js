@@ -12,6 +12,7 @@ function capitalize (s) {
     return s.charAt(0).toUpperCase() + s.slice(1)
   }
 
+
 module.exports = {
     name: 'tag',
     aliases: ['cc'],
@@ -27,6 +28,7 @@ module.exports = {
         return message.channel.send(`You did not specify a custom command name!`)
         if (regex.test(args[1]) == true)
         return message.channel.send(`You can't add special characters to your command name`)
+        let cmdName = args[1].toLowerCase()
         let files = message.attachments.array();
         if (!args.slice(2).join(" ") && files.length < 1)
         return message.channel.send(`No content specified!`)
@@ -39,11 +41,11 @@ module.exports = {
         messageAuthorId: message.author.id,
         authorName: message.author.tag,
         dateMade: new Date(),
-        command: args[1],
+        command: cmdName,
         content: args.slice(2).join(" ") || fileUrl,
         });
         newData.save();
-        message.channel.send(`Successfully created the command \`${args[1]}\``
+        message.channel.send(`Successfully created the command \`${cmdName}\``
         );}
       if (args[0] === 'delete') {
         const guildDB = await Guild.findOne({
@@ -65,7 +67,7 @@ module.exports = {
           return message.channel.send(`Successfully deleted the command \`${args[1]}\``);
       });
         } else {
-          return message.channel.send(`You are not authorised to delete this tag. \nCheck who owns this tag by using the command ${guildDB.prefix}tag info ${args[1]}`);
+          return message.channel.send(`You are not authorised to delete this tag. \nCheck who owns this tag by using the command \`${guildDB.prefix}tag info ${args[1]}\``);
         }
         } 
       if (args[0] === 'edit') {
@@ -97,7 +99,7 @@ module.exports = {
             return message.channel.send(`Successfully updated the command \`${args[1]}\``);
         });
           } else {
-            return message.channel.send(`You are not authorised to update this tag. \nCheck who owns this tag by using the command ${guildDB.prefix}tag info ${args[1]}`)
+            return message.channel.send(`You are not authorised to update this tag. \nCheck who owns this tag by using the command \`${guildDB.prefix}tag info ${args[1]}\``)
       ;}
     }
     if (args[0] == 'info') {

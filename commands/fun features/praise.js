@@ -104,7 +104,7 @@ module.exports = {
         })
 
         const amount = result.praise
-        return message.channel.send(`${message.author.username} you have praised <@${targetId}>! \n <@${targetId}> has been praised ${amount} times, blessed\nYou can praise someone again in 24 hours.`)
+        return message.channel.send(`${message.author.username} you have praised ${client.users.cache.get(targetId).tag}! \n${client.users.cache.get(targetId).tag} has been praised ${amount} times, blessed\nYou can praise someone again in 24 hours.`)
     } catch {
         return message.channel.send(`Your input was invalid. Please specify a user.`)
     }

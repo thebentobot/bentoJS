@@ -10,7 +10,7 @@ module.exports = {
     aliases: ['horo', 'astro', 'zodiac'],
     category: 'fun features',
     description: 'Provides a horoscope based on day and sign. If you search signs, it provides a list of signs and their date range',
-    usage: `horoscope <today/tomorrow/yesterday> [<sign>]\nhoroscope <save> <sign>`,
+    usage: `horoscope <[today]/tomorrow/yesterday> [<sign>]\nhoroscope <save> <sign>`,
     run: async (client, message, args) => {
         const guildDB = await Guild.findOne({
             guildID: message.guild.id
@@ -19,9 +19,6 @@ module.exports = {
             if (typeof s !== 'string') return ''
             return s.charAt(0).toUpperCase() + s.slice(1)
           }
-        if (!args[0]) {
-            return message.channel.send('You need to provide a timeframe!\nEither today, tomorrow or yesterday.').then(m => m.delete({timeout: 5000}));
-        }
         if (args[0] == 'save') {
             try {
               let tokens = message.cleanContent.split(" ");
@@ -37,7 +34,7 @@ module.exports = {
             }, {
               upsert: true
             })
-            return message.channel.send(`You have successfully saved your zodiac sign **${horo}**`)
+            return message.channel.send(`You have successfully saved your zodiac sign \`**${horo}**\``)
           } catch {
             let tokens = message.cleanContent.split(" ");
             let keywords = "coding train";
@@ -45,28 +42,27 @@ module.exports = {
               keywords = tokens.slice(2, tokens.length).join(" ");
             }
             let horo = keywords
-            return message.channel.send(`Error, couldn't save your zodiac sign **${horo}**`)
+            return message.channel.send(`Error, couldn't save your zodiac sign \`**${horo}**\``)
           }
         }
         if (args[0] == 'signs') {
             return message.channel.send('https://i.pinimg.com/736x/43/aa/50/43aa50c918f3bd03abb71b6d4aaf93c7--new-zodiac-signs-zodiac-signs-and-dates.jpg');
         }
-        if (args[0] == 'today') {
+        if (!args[0] || args[0] == 'today') {
             if (!args[1]) {
                 await userGlobalSchema.findOne({
                   userID: message.author.id
               }, async (err, res) => {
                   if (err) console.error(err);
-                  if (!res.horoscope.length) {
-                    return message.channel.send(`You did not specify a zodiac sign and haven't saved any! \nPlease use **save** in front of the zodiac sign you want to save.`)
+                  if (!res.horoscope) {
+                    return message.channel.send(`You haven't saved a zodiac sign!\nPlease use **save** in front of the zodiac sign you want to save.\nIf you for some reason don't know your zodiac sign, please use \`${guildDB.prefix}horoscope signs\` to see a list of signs`)
                   } else {
                       let sign = res.horoscope
                 aztroJs.getTodaysHoroscope(sign, function(res) {
-                        //console.log(res)
                         let response = res
                         const answer = response
                         if(answer.hasOwnProperty('error')) {
-                            return message.channel.send(`Your sign is invalid, try ${guildDB.prefix}horoscope signs to see a list of signs`)
+                            return message.channel.send(`Your sign is invalid, try \`${guildDB.prefix}horoscope signs\` to see a list of signs`)
                         }
                         const exampleEmbed = new Discord.MessageEmbed()
                         .setColor(stc(answer.color))
@@ -90,11 +86,10 @@ module.exports = {
             } else {
                 let sign = args[1]
                 aztroJs.getTodaysHoroscope(sign, function(res) {
-                    //console.log(res)
                     let response = res
                     const answer = response
                     if(answer.hasOwnProperty('error')) {
-                        return message.channel.send(`Your sign is invalid, try ${guildDB.prefix}horoscope signs to see a list of signs`)
+                        return message.channel.send(`Your sign is invalid, try \`${guildDB.prefix}horoscope signs\` to see a list of signs`)
                     }
                     const exampleEmbed = new Discord.MessageEmbed()
                     .setColor(stc(answer.color))
@@ -122,15 +117,14 @@ module.exports = {
               }, async (err, res) => {
                   if (err) console.error(err);
                   if (!res.horoscope.length) {
-                    return message.channel.send(`You did not specify a zodiac sign and haven't saved any! \nPlease use **save** in front of the zodiac sign you want to save.`)
+                    return message.channel.send(`You haven't saved a zodiac sign!\nPlease use **save** in front of the zodiac sign you want to save.\nIf you for some reason don't know your zodiac sign, please use \`${guildDB.prefix}horoscope signs\` to see a list of signs`)
                   } else {
                       let sign = res.horoscope
                 aztroJs.getTomorrowsHoroscope(sign, function(res) {
-                        //console.log(res)
                         let response = res
                         const answer = response
                         if(answer.hasOwnProperty('error')) {
-                            return message.channel.send(`Your sign is invalid, try ${guildDB.prefix}horoscope signs to see a list of signs`)
+                            return message.channel.send(`Your sign is invalid, try \`${guildDB.prefix}horoscope signs\` to see a list of signs`)
                         }
                         const exampleEmbed = new Discord.MessageEmbed()
                         .setColor(stc(answer.color))
@@ -154,11 +148,10 @@ module.exports = {
             } else {
                 let sign = args[1]
                 aztroJs.getTomorrowsHoroscope(sign, function(res) {
-                    //console.log(res)
                     let response = res
                     const answer = response
                     if(answer.hasOwnProperty('error')) {
-                        return message.channel.send(`Your sign is invalid, try ${guildDB.prefix}horoscope signs to see a list of signs`)
+                        return message.channel.send(`Your sign is invalid, try \`${guildDB.prefix}horoscope signs\` to see a list of signs`)
                     }
                     const exampleEmbed = new Discord.MessageEmbed()
                     .setColor(stc(answer.color))
@@ -186,15 +179,14 @@ module.exports = {
               }, async (err, res) => {
                   if (err) console.error(err);
                   if (!res.horoscope.length) {
-                    return message.channel.send(`You did not specify a zodiac sign and haven't saved any! \nPlease use **save** in front of the zodiac sign you want to save.`)
+                    return message.channel.send(`You haven't saved a zodiac sign!\nPlease use **save** in front of the zodiac sign you want to save.\nIf you for some reason don't know your zodiac sign, please use \`${guildDB.prefix}horoscope signs\` to see a list of signs`)
                   } else {
                       let sign = res.horoscope
                 aztroJs.getYesterdaysHoroscope(sign, function(res) {
-                        //console.log(res)
                         let response = res
                         const answer = response
                         if(answer.hasOwnProperty('error')) {
-                            return message.channel.send(`Your sign is invalid, try ${guildDB.prefix}horoscope signs to see a list of signs`)
+                            return message.channel.send(`Your sign is invalid, try \`${guildDB.prefix}horoscope signs\` to see a list of signs`)
                         }
                         const exampleEmbed = new Discord.MessageEmbed()
                         .setColor(stc(answer.color))
@@ -218,11 +210,10 @@ module.exports = {
             } else {
                 let sign = args[1]
                 aztroJs.getYesterdaysHoroscope(sign, function(res) {
-                    //console.log(res)
                     let response = res
                     const answer = response
                     if(answer.hasOwnProperty('error')) {
-                        return message.channel.send(`Your sign is invalid, try ${guildDB.prefix}horoscope signs to see a list of signs`)
+                        return message.channel.send(`Your sign is invalid, try \`${guildDB.prefix}horoscope signs\` to see a list of signs`)
                     }
                     const exampleEmbed = new Discord.MessageEmbed()
                     .setColor(stc(answer.color))

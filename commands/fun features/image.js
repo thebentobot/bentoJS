@@ -17,11 +17,10 @@ module.exports = {
           message.channel.send('Error');
         }
         else {
-          //console.log(JSON.stringify(results, null, '  '));
           try {
           message.channel.send(results[index].url);
         } catch (err) {
-          message.channel.send('No images found based on your search input.');
+          message.channel.send(`No images found based on your search input \`${query}\`.`);
         }
         }
       }

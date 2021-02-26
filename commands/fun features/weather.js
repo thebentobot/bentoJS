@@ -123,10 +123,10 @@ module.exports = {
           }, {
             upsert: true
           })
-          return message.channel.send(`You have successfully saved the location **${location}**`)
+          return message.channel.send(`You have successfully saved the location \`**${location}**\``)
         } catch {
           let location = keywords
-          return message.channel.send(`Error, couldn't save your location **${location}**`)
+          return message.channel.send(`Error, couldn't save your location \`**${location}**\``)
         }
       }
         if (!args[0]) {
@@ -135,7 +135,7 @@ module.exports = {
         }, async (err, res) => {
             if (err) console.error(err);
             if (!res.weather.length) {
-              return message.channel.send(`You did not specify a city and haven't saved any! \nPlease use **save** in front of the location you want to save.`)
+              return message.channel.send(`You did not specify a city and haven't saved any! \nPlease use \`**save**\` in front of the location you want to save.`)
             } else {
               function localTime(x) {
                 d = new Date()
@@ -154,11 +154,11 @@ module.exports = {
               const answer = json;
               try {
                 if (answer.weather[0].main == undefined) {
-                  return message.channel.send(`No results found for the location ${keywords}.\n Your saved location may be invalid`)
+                  return message.channel.send(`No results found for the location \`${keywords}\`.\n Your saved location may be invalid`)
                 }
               }
               catch {
-                return message.channel.send(`No results found for the location ${keywords}.\n Your saved location may be invalid`)
+                return message.channel.send(`No results found for the location \`${keywords}\`.\n Your saved location may be invalid`)
               }
                   const exampleEmbed = new Discord.MessageEmbed()
                   .setColor('#EB6E4B')
@@ -211,11 +211,11 @@ module.exports = {
             const answer = json;
            try {
             if (answer.weather[0].main == undefined) {
-              return message.channel.send(`No results found for the location ${args[0]}.`)
+              return message.channel.send(`No results found for the location \`${args[0]}\`.`)
             }
           }
           catch {
-            return message.channel.send(`No results found for the location ${args[0]}.`)
+            return message.channel.send(`No results found for the location \`${args[0]}\`.`)
           }
           const exampleEmbed = new Discord.MessageEmbed()
             .setColor('#EB6E4B')
