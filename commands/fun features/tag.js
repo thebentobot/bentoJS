@@ -17,7 +17,7 @@ module.exports = {
     aliases: ['cc'],
     category: 'fun features',
     description: 'Add, delete, edit tags, get info about a tag or a list of all tags on a server',
-    usage: `tag <add/delete/edit/info/list> <tag name> [tag content, text or attachment]`,
+    usage: `tag <add/delete/edit/info/list/random/rename> <tag name> [tag content, text or attachment]`,
     run: async (client, message, args) => {
       if (args[0]) {
         Command.findOne(
@@ -27,6 +27,10 @@ module.exports = {
         return message.channel.send(`You did not specify a custom command name!`)
         if (regex.test(args[1]) == true)
         return message.channel.send(`You can't add special characters to your command name`)
+        Command.countDocuments({guildID: message.guild.id, command: args[1]}, function (err, count) {
+          if (count>0) {
+            return message.channel.send(`A tag named \`${args[1]}\` already exists on this server.`)
+          }
         let files = message.attachments.array();
         if (!args.slice(2).join(" ") && files.length < 1)
         return message.channel.send(`No content specified!`)
@@ -44,7 +48,9 @@ module.exports = {
         });
         newData.save();
         message.channel.send(`Successfully created the command \`${args[1]}\``
-        );}
+        );
+      })
+      }
       if (args[0] === 'delete') {
         const guildDB = await Guild.findOne({
             guildID: message.guild.id
@@ -60,7 +66,7 @@ module.exports = {
               return message.channel.send('Error')
           }       
           if (!command) {
-              return message.channel.send(`\`${args[1]}\` does not exist on this server.`).then(m => m.delete({timeout: 5000}));
+              return message.channel.send(`\`${args[1]}\` does not exist on this server.`)
           }  
           return message.channel.send(`Successfully deleted the command \`${args[1]}\``);
       });
@@ -78,7 +84,7 @@ module.exports = {
         if (message.member.permissions.has("MANAGE_GUILD") || message.author.id == data.messageAuthorId) {
             let files = message.attachments.array();
             if (!args.slice(2).join(" ") && files.length < 1)
-            return message.channel.send(`No content specified!`).then(m => m.delete({timeout: 5000}));
+            return message.channel.send(`No content specified!`)
             let text = trim(args, 3, message.content);
             let fileUrl = files[0] ? files[0].url : '';
             if (fileUrl) text = [text, fileUrl].join('\n');
@@ -89,10 +95,10 @@ module.exports = {
                 return message.channel.send('Error')
             }
             if (!command) {
-                return message.channel.send(`\`${args[1]}\` does not exist on this server.`).then(m => m.delete({timeout: 5000}));
+                return message.channel.send(`\`${args[1]}\` does not exist on this server.`)
             }
             if (!args.slice(2).join(" ") && files.length < 1) {
-              return message.channel.send(`No content specified!`).then(m => m.delete({timeout: 5000}));
+              return message.channel.send(`No content specified!`)
             }
             return message.channel.send(`Successfully updated the command \`${args[1]}\``);
         });
@@ -167,5 +173,46 @@ module.exports = {
         });
     });
     }
+    if (args[0] == 'random') {
+      Command.countDocuments({
+        guildID: message.guild.id}).exec(function(err, count){
+
+        let random = Math.floor(Math.random() * count);
+      
+        Command.findOne().skip(random).exec(
+          function (err, result) {
+      
+            message.channel.send(`\`${result.command}\`:\n${result.content}`)
+      
+        });
+      
+      });
+    }
+    if (args[0] === 'rename') {
+      const guildDB = await Guild.findOne({
+          guildID: message.guild.id
+      });
+      const data = await Command.findOne({
+          guildID: message.guild.id, command: args[1]
+      });
+      if (message.member.permissions.has("MANAGE_GUILD") || message.author.id == data.messageAuthorId) {
+        if (args.slice(3).join(" ")) {
+          return message.channel.send(`Your command name can only be one word`)
+        }
+        Command.findOneAndUpdate(
+          { guildID: message.guild.id, command: args[1] }, {command: args[2]})
+          .exec(function(err, command) {
+            if (err) {
+              return message.channel.send('Error')
+          }
+          if (!command) {
+              return message.channel.send(`\`${args[1]}\` does not exist on this server.`)
+          }
+          return message.channel.send(`Successfully updated the command \`${args[1]}\`\nIt is now named \`${args[2]}\``);
+      });
+        } else {
+          return message.channel.send(`You are not authorised to update this tag. \nCheck who owns this tag by using the command ${guildDB.prefix}tag info ${args[1]}`)
+    ;}
+  }
   },
 };
