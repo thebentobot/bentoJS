@@ -6,7 +6,7 @@ require('dotenv').config();
 
 module.exports = {
     name: 'leaderboard',
-    aliases: ['ranking', 'rankings'],
+    aliases: ['ranking', 'rankings', 'lb'],
     category: 'fun features',
     description: 'Shows the XP/LVL leaderboard for a server, globally for the bot, or global praises',
     usage: `leaderboard [global/praise] [page number]`,

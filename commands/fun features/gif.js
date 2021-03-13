@@ -26,7 +26,7 @@ module.exports = {
             let json = await response.json();
             const index = Math.floor(Math.random() * json.results.length);
             if (!json.results.length) {
-              return message.channel.send('No GIFs found based on your search input.');
+              return message.channel.send(`No GIFs found based on your search input \`${keywords}\`.`);
             } else {
               message.channel.send(json.results[index].url);
             }
