@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
-const mongo = require('../utils/mongoose');
 const Guild = require('../models/guild');
 const userServer = require('../models/userServer');
 const userGlobal = require('../models/userGlobal');
 const Command = require('../models/command');
+const Discord = require('discord.js');
 
 module.exports = async (client, message) => {
     if (message.author.bot) return;
@@ -149,6 +149,14 @@ module.exports = async (client, message) => {
                 }
             }
             addXPglobal(message.member.id, 23).catch();
+    if (message.content.includes('tiktok.com')) {
+      // need to check if it is a link before executing
+      let checkUrl = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/
+      if (checkUrl.test(message) == false) {
+        return message.channel.send('det er ikke et url brormand')
+      }
+      return message.channel.send('lmao det virker')
+    }
 
     const prefix = settings.prefix;
 
