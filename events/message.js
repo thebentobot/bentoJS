@@ -4,6 +4,20 @@ const userServer = require('../models/userServer');
 const userGlobal = require('../models/userGlobal');
 const Command = require('../models/command');
 const Discord = require('discord.js');
+const cmdThing = require('node-cmd');
+const TikTokScraper = require('tiktok-scraper');
+const fetch = require('node-fetch');
+require('dotenv').config();
+const moment = require('moment');
+
+
+var markdownEscape = function(text) {
+   if (text.includes('_', '*', '~')) {
+     return `\`\`\`${text}\`\`\``
+   } else {
+     return text
+   }
+};
 
 module.exports = async (client, message) => {
     if (message.author.bot) return;
@@ -153,9 +167,32 @@ module.exports = async (client, message) => {
       // need to check if it is a link before executing
       let checkUrl = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/
       if (checkUrl.test(message) == false) {
-        return message.channel.send('det er ikke et url brormand')
+        return
       }
-      return message.channel.send('lmao det virker')
+      let testString = message.content
+      const query = testString.match(/\bhttps?:\/\/\S+/gi);
+      const videoMeta = await TikTokScraper.getVideoMeta(query)
+      const video = videoMeta.collector[0];
+      //console.log(video)
+      const videoURL = video.videoUrl
+      const headers = videoMeta.headers;
+      const response = await fetch(videoURL, {
+        method: 'GET', headers
+      });
+      const buffer = await response.buffer()
+      //console.log(response)
+      //console.log(buffer)
+      try {
+      const embed = new Discord.MessageEmbed()
+      .setTitle(`${markdownEscape(video.text)}`)
+      .setFooter(moment.unix(video.createTime).format("dddd, MMMM Do YYYY, h:mm A"))
+      .setColor('#000000')
+      .setAuthor(video.authorMeta.name, video.authorMeta.avatar, `https://www.tiktok.com/@${video.authorMeta.name}?`)
+      await message.channel.send(new Discord.MessageAttachment(buffer, 'video.mp4'))
+      await message.channel.send(embed)
+      } catch {
+        return
+      }
     }
 
     const prefix = settings.prefix;
