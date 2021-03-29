@@ -5,8 +5,7 @@ module.exports = client => {
         status: 'online',
         activity: {
             name: 'Here to feed you 🍱',
-            type: 'STREAMING',
-            url: 'https://github.com/banner4422/bento'
+            type: 'online',
         }
     });
 }

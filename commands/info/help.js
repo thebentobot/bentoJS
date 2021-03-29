@@ -47,7 +47,7 @@ async function helpMSG(client, message) {
         .setTitle('Help')
         .setThumbnail(client.user.avatarURL())
         .setDescription(`For a full list of commands, please type \`${guildDB.prefix}commands\` \nTo see more info about a specific command, please type \`${guildDB.prefix}help <command>\` without the \`<>\``)
-        .addField('About', 'A Discord bot for chat moderation and fun features you did not know you needed on Discord.')
+        .addField('About Bento Bot 🍱', 'A Discord bot for chat moderation and fun features you did not know you needed on Discord.')
         .addField('Github', 'https://github.com/banner4422/bento')
         .setFooter('Created by Banner#1017');
     message.channel.send(embed);
