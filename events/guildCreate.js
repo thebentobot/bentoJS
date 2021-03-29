@@ -6,7 +6,12 @@ module.exports = async (client, guild) => {
         _id: mongoose.Types.ObjectId(),
         guildID: guild.id,
         guildName: guild.name,
-        prefix: process.env.PREFIX
+        prefix: process.env.PREFIX,
+        NSFW: 'enable',
+        welcomeEnable: 'disable',
+        welcomeMsg: '',
+        tiktok: 'enable',
+        instagram: 'enable',
     });
 
     guild.save()
