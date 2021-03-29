@@ -4,9 +4,9 @@ module.exports = client => {
     client.user.setPresence({
         status: 'online',
         activity: {
-            name: 'Bannerbot out here',
+            name: 'Here to feed you 🍱',
             type: 'STREAMING',
-            url: 'https://www.youtube.com/watch?v=ocRVCN8hz_Q'
+            url: 'https://github.com/banner4422/bento'
         }
     });
 }
