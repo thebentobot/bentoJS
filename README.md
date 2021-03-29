@@ -1,7 +1,7 @@
 [Link to the Discord Support server](https://discord.gg/dd68WwP)
 
 A link to invite the bot to a Discord server will be provided when I feel like it's ready for public use.
-# Capperbot (WIP)
+# Bento Bot 🍱 (WIP)
 A Discord bot with server moderation tools and various entertaining commands.
 
 It is written in JavaScript, utilizing the [Discord.js](https://discord.js.org/#/) library, with the database being hosted by [MongoDB](https://www.mongodb.com/).
@@ -26,3 +26,6 @@ A guide on how to set up the bot and host it will be written in the future.
 The bot is mainly developed by [Christian](https://github.com/banner4422).
 
 Pull requests are very welcome if the features/changes makes sense and are up to par in quality.
+
+## Avatar credit
+The avatar illustration is done by [Freepik](https://github.com/banner4422).
