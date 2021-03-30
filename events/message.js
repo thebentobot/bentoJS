@@ -8,7 +8,8 @@ const TikTokScraper = require('tiktok-scraper');
 const fetch = require('node-fetch');
 require('dotenv').config();
 const moment = require('moment');
-
+const userInstagram = require("user-instagram");
+const trim = (str, max) => (str.length > max ? `${str.slice(0, max - 3)}...` : str);
 
 var markdownEscape = function(text) {
    if (text.includes('_', '*', '~')) {
@@ -209,6 +210,51 @@ module.exports = async (client, message) => {
       await message.channel.send(embed)
       } catch {
         return
+      }
+    }
+    if (message.content.includes('instagram.com')) {
+      if (settings.instagram == 'disable') {
+        return
+      }
+      let checkUrl = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/
+      if (checkUrl.test(message) == false) {
+        return
+      }
+      let testString = message.content
+      let instaDataId = testString.split('/')[4]
+      console.log(instaDataId)
+      const data = await userInstagram.getPostData(instaDataId)
+      console.log(data)
+      let place = await data.location ? `, ${await data.location.name}` : ''
+      let verify = await data.owner.isVerified ? '✅' : ''
+      console.log(verify)
+      if (!data.childrenPictures.length && data.isVideo == false) {
+        try {
+          const embed = new Discord.MessageEmbed()
+          .setTitle(`${markdownEscape(await data.owner.full_name)}`)
+          .setDescription(await data.caption)
+          .setFooter(`${moment.unix(await data.takenAt).format("h:mm A dddd MMMM Do YYYY")}${place}`)
+          .setColor('#FD1D1D')
+          .setAuthor(`${await data.owner.username} ${verify}`, await data.owner.profilePicture, `https://www.instagram.com/${await data.owner.username}/`)
+          .setImage(await data.displayUrl)
+          await message.channel.send(embed)
+        } catch {
+          return
+        }
+      }
+      if (data.isVideo == false) {
+        try {
+          const embed = new Discord.MessageEmbed()
+          .setTitle(`${markdownEscape(data.owner.full_name)}`)
+          .setDescription(trim(data.caption, 2048))
+          .setFooter(`${moment.unix(data.takenAt).format("h:mm A dddd MMMM Do YYYY")}${place}`)
+          .setColor('#FD1D1D')
+          .setAuthor(data.owner.username, data.owner.profilePicture, `https://www.instagram.com/${data.owner.username}/`)
+          .setImage(data.childrenPictures[0].displayUrl)
+          await message.channel.send(embed)
+        } catch {
+          return
+        }
       }
     }
 
