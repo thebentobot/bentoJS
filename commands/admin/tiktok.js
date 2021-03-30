@@ -3,13 +3,11 @@ const mongoose = require('mongoose');
 const Guild = require('../../models/guild');
 
 module.exports = {
-    name: 'prefix',
+    name: 'tiktok',
     category: 'admin',
-    description: 'Sets the prefix for this server.',
-    usage: `prefix <newPrefix>`,
+    description: 'Enable or disable Tiktok embedding for this server.',
+    usage: `tiktok <enable/disable/status>`,
     run: async (client, message, args) => {
-        message.delete();
-
         if (!message.member.hasPermission('MANAGE_GUILD')) {
             return message.channel.send('You do not have permission to use this command!').then(m => m.delete({timeout: 10000}));
         };
@@ -40,13 +38,21 @@ module.exports = {
         });
 
         if (args.length < 1) {
-            return message.channel.send(`You must specify a prefix to set for this server! Your current server prefix is \`${settings.prefix}\``).then(m => m.delete({timeout: 10000}));
+            return message.channel.send(`You must specify if you want to **enable** or **disable** Tiktok embedding for this server!\nTiktok embedding is currently \`${settings.tiktok}d\` on this server`)
         };
 
-        await settings.updateOne({
-            prefix: args[0]
-        });
+        if (args[0] == 'status') {
+            return message.channel.send(`Tiktok embedding is currently \`${settings.tiktok}d\` on this server`)
+        }
 
-        return message.channel.send(`Your server prefix has been updated to \`${args[0]}\``);
+        if (args[0] == 'enable' || args[0] == 'disable') {
+            await settings.updateOne({
+                tiktok: args[0]
+            });
+        } else {
+            return message.channel.send(`\`${args[0]}\` is an invalid argument for this command.\nYou must specify if you want to **enable** or **disable** Tiktok embedding for this server!\nTiktok embedding is currently \`${settings.tiktok}d\` on this server`)
+        }
+
+        return message.channel.send(`Tiktok embedding has been \`${args[0]}d\``);
     }
 }

@@ -1,6 +1,7 @@
 require('dotenv').config();
 const fetch = require("node-fetch");
 const utf8 = require('utf8');
+const Guild = require('../../models/guild');
 
 module.exports = {
     name: 'gif',
@@ -9,6 +10,30 @@ module.exports = {
     description: 'Searches for random GIFs based on the search input',
     usage: `gif <search input>`,
     run: async (client, message, args) => {
+      const settings = await Guild.findOne({
+        guildID: message.guild.id
+    }, (err, guild) => {
+        if (err) console.error(err)
+        if (!guild) {
+            const newGuild = new Guild({
+                _id: mongoose.Types.ObjectId(),
+                guildID: message.guild.id,
+                guildName: message.guild.name,
+                prefix: process.env.PREFIX,
+                NSFW: 'disable',
+                welcomeEnable: 'disable',
+                welcomeMsg: '',
+                tiktok: 'enable',
+                instagram: 'enable',
+            })
+
+            newGuild.save()
+            .then(result => console.log(result))
+            .catch(err => console.error(err));
+
+            return message.channel.send('This server was not in our database! We have added it, please retype this command.').then(m => m.delete({timeout: 10000}));
+        }
+    });
         let tokens = message.cleanContent.split(" ");
         if (!args.length) {
           return message.channel.send('You need to provide a search input!').then(m => m.delete({timeout: 5000}));
@@ -21,8 +46,15 @@ module.exports = {
             if (tokens.length > 1) {
               keywords = tokens.slice(1, tokens.length).join(" ");
             }
-            let url = `https://api.tenor.com/v1/search?q=${keywords}&key=${process.env.TENORKEY}&contentfilter=off`;
+            let url;
+            if (settings.NSFW == 'enable') {
+              url = `https://api.tenor.com/v1/search?q=${keywords}&key=${process.env.TENORKEY}&contentfilter=off`
+            }
+            if (settings.NSFW == 'disable') {
+              url = `https://api.tenor.com/v1/search?q=${keywords}&key=${process.env.TENORKEY}&contentfilter=high`
+            }
             let response = await fetch(utf8.encode(url));
+            console.log(response)
             let json = await response.json();
             const index = Math.floor(Math.random() * json.results.length);
             if (!json.results.length) {

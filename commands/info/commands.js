@@ -20,7 +20,7 @@ module.exports = {
                     guildName: message.guild.name,
                     prefix: process.env.PREFIX,
                     logChannelID: null,
-                    NSFW: 'enable',
+                    NSFW: 'disable',
                     welcomeEnable: 'disable',
                     welcomeMsg: '',
                     tiktok: 'enable',

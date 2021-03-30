@@ -7,7 +7,7 @@ module.exports = async (client, guild) => {
         guildID: guild.id,
         guildName: guild.name,
         prefix: process.env.PREFIX,
-        NSFW: 'enable',
+        NSFW: 'disable',
         welcomeEnable: 'disable',
         welcomeMsg: '',
         tiktok: 'enable',

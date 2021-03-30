@@ -4,7 +4,6 @@ const userServer = require('../models/userServer');
 const userGlobal = require('../models/userGlobal');
 const Command = require('../models/command');
 const Discord = require('discord.js');
-const cmdThing = require('node-cmd');
 const TikTokScraper = require('tiktok-scraper');
 const fetch = require('node-fetch');
 require('dotenv').config();
@@ -35,7 +34,7 @@ module.exports = async (client, message) => {
                 guildName: message.guild.name,
                 prefix: process.env.PREFIX,
                 logChannelID: null,
-                NSFW: 'enable',
+                NSFW: 'disable',
                 welcomeEnable: 'disable',
                 welcomeMsg: '',
                 tiktok: 'enable',
@@ -179,6 +178,9 @@ module.exports = async (client, message) => {
             }
             addXPglobal(message.member.id, 23).catch();
     if (message.content.includes('tiktok.com')) {
+      if (settings.tiktok == 'disable') {
+        return
+      }
       // need to check if it is a link before executing
       let checkUrl = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/
       if (checkUrl.test(message) == false) {
