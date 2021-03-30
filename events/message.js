@@ -212,6 +212,7 @@ module.exports = async (client, message) => {
         return
       }
     }
+    /*
     if (message.content.includes('instagram.com')) {
       if (settings.instagram == 'disable') {
         return
@@ -257,6 +258,7 @@ module.exports = async (client, message) => {
         }
       }
     }
+    */
 
     const prefix = settings.prefix;
 
