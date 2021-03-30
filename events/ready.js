@@ -1,11 +1,5 @@
 module.exports = client => {
     console.log('Let\'s get this bread!');
     
-    client.user.setPresence({
-        status: 'online',
-        activity: {
-            name: 'Here to feed you 🍱',
-            type: 'online',
-        }
-    });
+    client.user.setActivity(`🍱 - Feeding in ${client.channels.cache.size} channels, serving on ${client.guilds.cache.size} servers`, {type: 'PLAYING'});
 }
