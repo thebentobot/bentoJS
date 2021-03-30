@@ -28,4 +28,4 @@ The bot is mainly developed by [Christian](https://github.com/banner4422).
 Pull requests are very welcome if the features/changes makes sense and are up to par in quality.
 
 ## Avatar credit
-The avatar illustration is done by [Freepik](https://github.com/banner4422).
+The avatar illustration is done by [Freepik](http://www.freepik.com).
