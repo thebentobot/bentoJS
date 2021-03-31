@@ -11,7 +11,7 @@ module.exports = {
     run: async (client, message, args) => {
         message.delete();
 
-        if (!message.member.hasPermission('MANAGE_GUILD')) {
+        if (!message.member.hasPermission('ADMINISTRATOR')) {
             return message.channel.send('You do not have permission to use this command!').then(m => m.delete({timeout: 10000}));
         };
 
