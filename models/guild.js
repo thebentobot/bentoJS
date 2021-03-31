@@ -11,6 +11,13 @@ const guildSchema = mongoose.Schema({
     welcomeMsg: String,
     tiktok: {type: String, enum: ['enable', 'disable']},
     instagram: {type: String, enum: ['enable', 'disable']},
+    MsgLogChannelID: String,
+    welcomeChannel: String,
+    muteRole: String,
+    autoRole: String,
+    byeEnable: String,
+    byeMsg: String,
+    byeChannel: String,
 });
 
 module.exports = mongoose.model('Guild', guildSchema, 'guilds');

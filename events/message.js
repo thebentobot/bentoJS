@@ -30,16 +30,19 @@ module.exports = async (client, message) => {
         if (err) console.error(err)
         if (!guild) {
             const newGuild = new Guild({
-                _id: mongoose.Types.ObjectId(),
-                guildID: message.guild.id,
-                guildName: message.guild.name,
-                prefix: process.env.PREFIX,
-                logChannelID: null,
-                NSFW: 'disable',
-                welcomeEnable: 'disable',
-                welcomeMsg: '',
-                tiktok: 'enable',
-                instagram: 'enable',
+              _id: mongoose.Types.ObjectId(),
+              guildID: message.guild.id,
+              guildName: message.guild.name,
+              prefix: process.env.PREFIX,
+              NSFW: 'disable',
+              welcomeEnable: 'disable',
+              welcomeMsg: '',
+              tiktok: 'enable',
+              instagram: 'enable',
+              logChannelID: null,
+              MsgLogChannelID: '',
+              welcomeChannel: '',
+              muteRole: '',
             })
 
             newGuild.save()
@@ -49,53 +52,7 @@ module.exports = async (client, message) => {
             return message.channel.send('This server was not in our database! We have now added and you should be able to use bot commands.').then(m => m.delete({timeout: 10000}));
         }
     });
-    const userS = await userServer.findOne({
-        guildID: message.guild.id, userID: message.author.id
-    }, (err, author) => {
-        if (err) console.error(err)
-        if (!author) {
-            const newUserServer = new userServer({
-                _id: mongoose.Types.ObjectId(),
-                guildID: message.guild.id,
-                guildName: message.guild.name,
-                userID: message.author.id,
-                username: message.author.tag,
-                xp: 0,
-                level: 1,
-                muteCount: 0,
-                warnCount: 0,
-                kickCount: 0,
-                banCount: 0
-            })
 
-            newUserServer.save()
-            .then()
-            .catch(err => console.error(err));
-        }
-    });
-    const userG = await userGlobal.findOne({
-        userID: message.author.id
-    }, (err, author) => {
-        if (err) console.error(err)
-        if (!author) {
-            const newUserGlobal = new userGlobal({
-                _id: mongoose.Types.ObjectId(),
-                userID: message.author.id,
-                username: message.author.tag,
-                xp: 0,
-                level: 1,
-                weather: '',
-                horoscope: '',
-                lastfm: ''
-            })
-
-            newUserGlobal.save()
-            .then()
-            .catch(err => console.error(err));
-            return console.log(`${message.author.username} has joined our database`);
-        }
-    });
-    
     const addXPserver = async (guildID, userID, xpToAdd) => {
       if (cooldown.has(userID)) {
       }

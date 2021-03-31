@@ -25,12 +25,19 @@ module.exports = {
                     guildID: message.guild.id,
                     guildName: message.guild.name,
                     prefix: process.env.PREFIX,
-                    logChannelID: null,
-                    NSFW: 'enable',
+                    NSFW: 'disable',
                     welcomeEnable: 'disable',
                     welcomeMsg: '',
                     tiktok: 'enable',
                     instagram: 'enable',
+                    logChannelID: null,
+                    MsgLogChannelID: '',
+                    welcomeChannel: '',
+                    muteRole: '',
+                    autoRole: '',
+                    byeEnable: 'disable',
+                    byeMsg: '',
+                    byeChannel: '',
                 });
 
                 await newGuild.save()

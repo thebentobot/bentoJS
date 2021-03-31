@@ -4,6 +4,7 @@ const Guild = require('../../models/guild');
 
 module.exports = {
     name: 'insta',
+    aliases: [],
     category: 'admin',
     description: 'Enable or disable Instagram embedding for this server.',
     usage: `insta <enable/disable/status>`,
@@ -27,6 +28,15 @@ module.exports = {
                     welcomeMsg: '',
                     tiktok: 'enable',
                     instagram: 'enable',
+                    logChannelID: null,
+                    MsgLogChannelID: '',
+                    welcomeChannel: '',
+                    muteRole: '',
+                    autoRole: '',
+                    byeEnable: 'disable',
+                    byeMsg: '',
+                    byeChannel: '',
+
                 })
 
                 newGuild.save()

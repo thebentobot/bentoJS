@@ -12,6 +12,14 @@ module.exports = async (client, guild) => {
         welcomeMsg: '',
         tiktok: 'enable',
         instagram: 'enable',
+        logChannelID: null,
+        MsgLogChannelID: '',
+        welcomeChannel: '',
+        muteRole: '',
+        autoRole: '',
+        byeEnable: 'disable',
+        byeMsg: '',
+        byeChannel: '',
     });
 
     guild.save()

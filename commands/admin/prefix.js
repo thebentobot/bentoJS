@@ -4,6 +4,7 @@ const Guild = require('../../models/guild');
 
 module.exports = {
     name: 'prefix',
+    aliases: [],
     category: 'admin',
     description: 'Sets the prefix for this server.',
     usage: `prefix <newPrefix>`,
@@ -29,6 +30,14 @@ module.exports = {
                     welcomeMsg: '',
                     tiktok: 'enable',
                     instagram: 'enable',
+                    logChannelID: null,
+                    MsgLogChannelID: '',
+                    welcomeChannel: '',
+                    muteRole: '',
+                    autoRole: '',
+                    byeEnable: 'disable',
+                    byeMsg: '',
+                    byeChannel: '',
                 })
 
                 newGuild.save()

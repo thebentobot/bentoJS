@@ -4,6 +4,7 @@ const Guild = require('../../models/guild');
 
 module.exports = {
     name: 'tiktok',
+    aliases: [],
     category: 'admin',
     description: 'Enable or disable Tiktok embedding for this server.',
     usage: `tiktok <enable/disable/status>`,
@@ -27,6 +28,14 @@ module.exports = {
                     welcomeMsg: '',
                     tiktok: 'enable',
                     instagram: 'enable',
+                    logChannelID: null,
+                    MsgLogChannelID: '',
+                    welcomeChannel: '',
+                    muteRole: '',
+                    autoRole: '',
+                    byeEnable: 'disable',
+                    byeMsg: '',
+                    byeChannel: '',
                 })
 
                 newGuild.save()
