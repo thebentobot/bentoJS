@@ -21,6 +21,7 @@ module.exports = {
         const response = await fetch(videoURL, {
             method: 'GET', headers
         });
+        //test
         const buffer = await response.buffer()
         console.log(response)
         console.log(buffer)
