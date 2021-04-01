@@ -194,8 +194,10 @@ module.exports = async (client, message) => {
       const query = testString.match(/\bhttps?:\/\/\S+/gi);
       //console.log('query: ' + query)
       const videoMeta = await TikTokScraper.getVideoMeta(query)
+      //console.log(videoMeta)
       const video = videoMeta.collector[0];
-      //console.log('video: ' + JSON.stringify(video))
+      //console.log(video)
+      //console.log('videometa: ' + JSON.stringify(video))
       const videoURL = video.videoUrl
       const headers = videoMeta.headers;
       const response = await fetch(videoURL, {
@@ -204,17 +206,15 @@ module.exports = async (client, message) => {
       //console.log('response: ' + JSON.stringify(response))
 
       const buffer = await response.buffer()
-      try {
+      
       const embed = new Discord.MessageEmbed()
-      .setTitle(`${markdownEscape(video.text)}`)
+      .setTitle(`${trim(markdownEscape(video.text), 256)}`)
       .setFooter(moment.unix(video.createTime).format("dddd, MMMM Do YYYY, h:mm A"))
       .setColor('#000000')
       .setAuthor(video.authorMeta.name, video.authorMeta.avatar, `https://www.tiktok.com/@${video.authorMeta.name}?`)
       await message.channel.send(new Discord.MessageAttachment(buffer, 'video.mp4'))
       await message.channel.send(embed)
-      } catch {
-        return
-      }
+      
     }
     /*
     if (message.content.includes('instagram.com')) {
