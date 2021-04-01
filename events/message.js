@@ -181,41 +181,42 @@ module.exports = async (client, message) => {
             }, 60000) // 1 minute
             }
             addXPglobal(message.member.id, 23).catch();
-    if (message.content.includes('tiktok.com')) {
-      if (settings.tiktok == 'disable') {
-        return
-      }
-      // need to check if it is a link before executing
-      let checkUrl = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/
-      if (checkUrl.test(message) == false) {
-        return
-      }
-      let testString = message.content
-      const query = testString.match(/\bhttps?:\/\/\S+/gi);
-      //console.log('query: ' + query)
-      const videoMeta = await TikTokScraper.getVideoMeta(query)
-      //console.log(videoMeta)
-      const video = videoMeta.collector[0];
-      //console.log(video)
-      //console.log('videometa: ' + JSON.stringify(video))
-      const videoURL = video.videoUrl
-      const headers = videoMeta.headers;
-      const response = await fetch(videoURL, {
-        method: 'GET', headers
-      });
-      //console.log('response: ' + JSON.stringify(response))
-
-      const buffer = await response.buffer()
-      
-      const embed = new Discord.MessageEmbed()
-      .setTitle(`${trim(markdownEscape(video.text), 256)}`)
-      .setFooter(moment.unix(video.createTime).format("dddd, MMMM Do YYYY, h:mm A"))
-      .setColor('#000000')
-      .setAuthor(video.authorMeta.name, video.authorMeta.avatar, `https://www.tiktok.com/@${video.authorMeta.name}?`)
-      await message.channel.send(new Discord.MessageAttachment(buffer, 'video.mp4'))
-      await message.channel.send(embed)
-      
-    }
+            if (message.content.includes('tiktok.com')) {
+              if (settings.tiktok == 'disable') {
+                return
+              }
+              // need to check if it is a link before executing
+              let checkUrl = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/
+              if (checkUrl.test(message) == false) {
+                return
+              }
+              let testString = message.content
+              console.log(message.content)
+              const query = testString.match(/\bhttps?:\/\/\S+/gi);
+              console.log(query)
+              const videoMeta = await TikTokScraper.getVideoMeta(query)
+              const video = videoMeta.collector[0];
+              //console.log(video)
+              const videoURL = video.videoUrl
+              const headers = videoMeta.headers;
+              const response = await fetch(videoURL, {
+                method: 'GET', headers
+              });
+              const buffer = await response.buffer()
+              //console.log(response)
+              //console.log(buffer)
+              try {
+              const embed = new Discord.MessageEmbed()
+              .setTitle(`${markdownEscape(video.text)}`)
+              .setFooter(moment.unix(video.createTime).format("dddd, MMMM Do YYYY, h:mm A"))
+              .setColor('#000000')
+              .setAuthor(video.authorMeta.name, video.authorMeta.avatar, `https://www.tiktok.com/@${video.authorMeta.name}?`)
+              await message.channel.send(new Discord.MessageAttachment(buffer, 'video.mp4'))
+              await message.channel.send(embed)
+              } catch {
+                return
+              }
+            }
     /*
     if (message.content.includes('instagram.com')) {
       if (settings.instagram == 'disable') {
