@@ -191,9 +191,10 @@ module.exports = async (client, message) => {
                 return
               }
               let testString = message.content
-              console.log(message.content)
+              //console.log(message.content)
               const query = testString.match(/\bhttps?:\/\/\S+/gi);
-              console.log(query)
+              const finalQuery = query[0]
+              console.log(finalQuery)
               const videoMeta = await TikTokScraper.getVideoMeta(query)
               const video = videoMeta.collector[0];
               //console.log(video)
