@@ -192,17 +192,18 @@ module.exports = async (client, message) => {
       }
       let testString = message.content
       const query = testString.match(/\bhttps?:\/\/\S+/gi);
+      //console.log('query: ' + query)
       const videoMeta = await TikTokScraper.getVideoMeta(query)
       const video = videoMeta.collector[0];
-      //console.log(video)
+      //console.log('video: ' + JSON.stringify(video))
       const videoURL = video.videoUrl
       const headers = videoMeta.headers;
       const response = await fetch(videoURL, {
         method: 'GET', headers
       });
+      //console.log('response: ' + JSON.stringify(response))
+
       const buffer = await response.buffer()
-      //console.log(response)
-      //console.log(buffer)
       try {
       const embed = new Discord.MessageEmbed()
       .setTitle(`${markdownEscape(video.text)}`)
