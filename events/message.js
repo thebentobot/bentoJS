@@ -8,11 +8,11 @@ const TikTokScraper = require('tiktok-scraper');
 const fetch = require('node-fetch');
 require('dotenv').config();
 const moment = require('moment');
-const userInstagram = require("user-instagram");
+const InstagramScraper = require('instatouch');
 const trim = (str, max) => (str.length > max ? `${str.slice(0, max - 3)}...` : str);
 
 var markdownEscape = function(text) {
-   if (text.includes('_', '*', '~')) {
+   if (text.includes('_', '*', '**', '~', '~~', '~~')) {
      return `\`\`\`${text}\`\`\``
    } else {
      return text
@@ -222,41 +222,166 @@ module.exports = async (client, message) => {
         return
       }
       let testString = message.content
-      let instaDataId = testString.split('/')[4]
-      console.log(instaDataId)
-      const data = await userInstagram.getPostData(instaDataId)
-      console.log(data)
-      let place = await data.location ? `, ${await data.location.name}` : ''
-      let verify = await data.owner.isVerified ? '✅' : ''
-      console.log(verify)
-      if (!data.childrenPictures.length && data.isVideo == false) {
-        try {
+      const query = testString.match(/\bhttps?:\/\/\S+/gi);
+      const finalQuery = query[0]
+      //console.log(finalQuery)
+      const data = await InstagramScraper.getPostMeta(finalQuery, 
+        {
+          session:"sessionid=184723440%3AerC48tv5DaoVcA%3A22"
+        })
+      //console.log(data)
+      const openData = data.graphql.shortcode_media
+      //console.log(openData)
+      let place = await openData.location ? `, ${await openData.location.name}` : ''
+      let verify = await openData.owner.is_verified ? '✅' : ''
+      //console.log('location: ' + openData.location)
+      console.log(openData.edge_sidecar_to_children.edges)
+      //console.log(openData.edge_sidecar_to_children.edges[0].node.display_url)
+
+        // 1 pic, no vid
+      if (typeof openData.edge_sidecar_to_children === 'undefined' && openData.is_video == false) {
+      try {
           const embed = new Discord.MessageEmbed()
-          .setTitle(`${markdownEscape(await data.owner.full_name)}`)
-          .setDescription(await data.caption)
-          .setFooter(`${moment.unix(await data.takenAt).format("h:mm A dddd MMMM Do YYYY")}${place}`)
-          .setColor('#FD1D1D')
-          .setAuthor(`${await data.owner.username} ${verify}`, await data.owner.profilePicture, `https://www.instagram.com/${await data.owner.username}/`)
-          .setImage(await data.displayUrl)
+          .setTitle(`${markdownEscape(await openData.owner.full_name)}`)
+          .setDescription(trim(markdownEscape(await openData.edge_media_to_caption.edges[0].node.text), 2048))
+          .setFooter(`${moment.unix(await openData.taken_at_timestamp).format("h:mm A dddd MMMM Do YYYY")}${place}`)
+          .setColor(process.env.COLOR)
+          .setAuthor(`${await openData.owner.username} ${verify}`, await openData.owner.profile_pic_url, `https://www.instagram.com/${await openData.owner.username}/`)
+          .setImage(await openData.display_url)
           await message.channel.send(embed)
         } catch {
           return
         }
       }
-      if (data.isVideo == false) {
-        try {
-          const embed = new Discord.MessageEmbed()
-          .setTitle(`${markdownEscape(data.owner.full_name)}`)
-          .setDescription(trim(data.caption, 2048))
-          .setFooter(`${moment.unix(data.takenAt).format("h:mm A dddd MMMM Do YYYY")}${place}`)
-          .setColor('#FD1D1D')
-          .setAuthor(data.owner.username, data.owner.profilePicture, `https://www.instagram.com/${data.owner.username}/`)
-          .setImage(data.childrenPictures[0].displayUrl)
+      // 1 vid, nothing else
+      if (openData.is_video == true && typeof openData.edge_sidecar_to_children === 'undefined') {
+        const response = await fetch(openData.video_url, {
+          method: 'GET'
+        })
+        const buffer = await response.buffer()
+        const embed = new Discord.MessageEmbed()
+          .setTitle(`${markdownEscape(await openData.owner.full_name)}`)
+          .setDescription(trim(markdownEscape(await openData.edge_media_to_caption.edges[0].node.text), 2048))
+          .setFooter(`${moment.unix(await openData.taken_at_timestamp).format("h:mm A dddd MMMM Do YYYY")}${place}`)
+          .setColor(process.env.COLOR)
+          .setAuthor(`${await openData.owner.username} ${verify}`, await openData.owner.profile_pic_url, `https://www.instagram.com/${await openData.owner.username}/`)
+          //.setImage(await openData.display_url)
           await message.channel.send(embed)
-        } catch {
-          return
-        }
+          await message.channel.send(new Discord.MessageAttachment(buffer, 'video.mp4'))
       }
+      // more pics than 1
+      if (openData.edge_sidecar_to_children) {
+        function media (post) {
+          if (post.is_video == false) {
+              return post.display_url
+          }
+          if (post.is_video == false) {
+            return ''
+          }
+        }
+        
+        // borrowed function from the leaderboard command
+        // testlink: https://www.instagram.com/p/CNB8m5PrE2r/ 
+        function generateLBembed(lb) {
+          const embeds = [];
+          let k = 10;
+          //console.log('length: ' + lb.edge_sidecar_to_children.edges.length)
+          // loops through the children-posts for a post till there isn't any posts left
+          for(let i =0; i < lb.edge_sidecar_to_children.edges.length; i += 1) {
+              // loops through every children-post, one children-post = current: object Object
+              const current = lb.edge_sidecar_to_children.edges[i]
+              //console.log('current:' + current)
+              //console.log(current.node.video_url)
+              k += 1;
+              //const info = current.map(user => user.node.display_url)
+              //console.log('info: ' + info)
+              // if children-post is not a video, it pushes a normal embed page with an image
+              if (current.node.is_video == false) {
+              const embed = new Discord.MessageEmbed()
+              .setDescription(trim(markdownEscape(lb.edge_media_to_caption.edges[0].node.text), 2048))
+              .setColor(process.env.COLOR)
+              .setImage(media(current.node))
+              .setTitle(`${markdownEscape(lb.owner.full_name)}`)
+              .setFooter(`${moment.unix(lb.taken_at_timestamp).format("h:mm A dddd MMMM Do YYYY")}${place}`)
+              .setAuthor(`${lb.owner.username} ${verify}`, lb.owner.profile_pic_url, `https://www.instagram.com/${lb.owner.username}/`)
+              embeds.push(embed)
+            }
+              // if children-post has a video, it doesn't send an .setImage
+              // it only sends the embed, and the video url
+              // perhaps it's possible to check out of the function scope below, if an object has two objects (embed, current.node.video_url), and if so, then it uses that url
+              if (current.node.is_video == true) {
+                const embed = new Discord.MessageEmbed()
+                .setDescription(trim(markdownEscape(lb.edge_media_to_caption.edges[0].node.text), 2048))
+                .setColor(process.env.COLOR)
+                //.setImage
+                .addField('Video link', `[Click here](${current.node.video_url})`)
+                .setTitle(`${markdownEscape(lb.owner.full_name)}`)
+                .setFooter(`${moment.unix(lb.taken_at_timestamp).format("h:mm A dddd MMMM Do YYYY")}${place}`)
+                .setAuthor(`${lb.owner.username} ${verify}`, lb.owner.profile_pic_url, `https://www.instagram.com/${lb.owner.username}/`)
+                embeds.push([embed, current.node.video_url])
+              }
+              
+              console.log(embeds)
+          }
+          return embeds;
+      }
+        
+          let currentPage = 0;
+          const embeds = generateLBembed(openData)
+          // if one of the objects in the embed contains two objects in an array (embed, video) - it should post it as two messages??
+          // is the above the solution to the video problem?
+          console.log([[embeds]])
+          // embeds[2][1] sends the exact url, how can i automate this progress?
+          console.log('testing :D : ' + embeds[2][1])
+          // takes the url from the extra object for the third embed, and then uses the url
+          // it is only possible to use this function below in this scope, it isn't possible in the generateLBembed function because of it's sync scope, it isn't an async scope
+
+          const response = await fetch(embeds[2][1], {
+            method: 'GET'
+          })
+          const buffer = await response.buffer()
+          // we could make the await buffer below an object, and perhaps we could somehow automate (in the code below), that if the embed page has a video, it sends this
+          // if we do implement that successfully (perhaps similar to the 1 video function above),
+          // we will need to delete the whole embed and resend it from the page the user changes it to (where it's possible to switch)
+          // it should be possible with the arrows below, somehow check if the embeds[currentPage] has two objects, and if so, it posts the video
+
+          // if there's more than two videos, perhaps we need to automate the fetch/buffer down in the collector.on perhaps, because it can't be automate in this scope or?
+          await message.channel.send(new Discord.MessageAttachment(buffer, 'video.mp4'))
+
+          const queueEmbed = await message.channel.send(`Current Picture: ${currentPage+1}/${embeds.length}`, embeds[currentPage]);
+            await queueEmbed.react('⬅️');
+            await queueEmbed.react('➡️');
+            await queueEmbed.react('❌');
+            const filter = (reaction, user) => ['⬅️', '➡️', '❌'].includes(reaction.emoji.name) && (message.author.id === user.id);
+            const collector = queueEmbed.createReactionCollector(filter);
+
+            collector.on('collect', async (reaction, user) => {
+                if (reaction.emoji.name === '➡️') {
+                    if (currentPage < embeds.length-1) {
+                      currentPage++;
+                      reaction.users.remove(user);
+                      queueEmbed.edit(`Current Picture: ${currentPage+1}/${embeds.length}`, embeds[currentPage]);
+                    } 
+                  } else if (reaction.emoji.name === '⬅️') {
+                    if (currentPage !== 0) {
+                      --currentPage;
+                      reaction.users.remove(user);
+                      queueEmbed.edit(`Current Picture ${currentPage+1}/${embeds.length}`, embeds[currentPage]);
+                    }
+                  } else {
+                    collector.stop();
+                    await queueEmbed.delete();
+                  }
+            })
+        
+      }
+      
+      // generate a function that decides if one node = video or image
+      // if it does contain video, it needs to yeh, do something special with the video
+      // perhaps we need to check at the start of the code, for each content
+      // kinda like case?
+      // if case 1 video 2 pics then, if case 0 video 2 pics etc.
+    //end
     }
 
     const prefix = settings.prefix;

@@ -18,6 +18,7 @@
     "dotenv": "^8.2.0",
     "fs": "0.0.1-security",
     "g-i-s": "^2.1.6",
+    "instatouch": "^2.3.3",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.32",
     "mongoose": "^5.9.11",
@@ -29,7 +30,6 @@
     "tiktok-scraper": "^1.4.17",
     "timezone": "^1.0.23",
     "tz-lookup": "^6.1.25",
-    "user-instagram": "^2.1.9",
     "utf8": "^3.0.0"
   }
 }
