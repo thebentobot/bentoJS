@@ -269,7 +269,7 @@ module.exports = async (client, message) => {
           await message.channel.send(embed)
           await message.channel.send(new Discord.MessageAttachment(buffer, 'video.mp4'))
       }
-      // more pics than 1
+      // more pics than 1, videos featured as well
       if (openData.edge_sidecar_to_children) {
         function media (post) {
           if (post.is_video == false) {
@@ -281,20 +281,14 @@ module.exports = async (client, message) => {
         }
         
         // borrowed function from the leaderboard command
-        // testlink: https://www.instagram.com/p/CNB8m5PrE2r/ 
         function generateLBembed(lb) {
           const embeds = [];
           let k = 10;
-          //console.log('length: ' + lb.edge_sidecar_to_children.edges.length)
           // loops through the children-posts for a post till there isn't any posts left
           for(let i =0; i < lb.edge_sidecar_to_children.edges.length; i += 1) {
               // loops through every children-post, one children-post = current: object Object
               const current = lb.edge_sidecar_to_children.edges[i]
-              //console.log('current:' + current)
-              //console.log(current.node.video_url)
               k += 1;
-              //const info = current.map(user => user.node.display_url)
-              //console.log('info: ' + info)
               // if children-post is not a video, it pushes a normal embed page with an image
               if (current.node.is_video == false) {
               const embed = new Discord.MessageEmbed()
@@ -313,8 +307,6 @@ module.exports = async (client, message) => {
                 const embed = new Discord.MessageEmbed()
                 .setDescription(trim(markdownEscape(lb.edge_media_to_caption.edges[0].node.text), 2048))
                 .setColor(process.env.COLOR)
-                //.setImage
-                //.addField('Video link', `[Click here](${current.node.video_url})`)
                 .setTitle(`${markdownEscape(lb.owner.full_name)}`)
                 .setFooter(`${moment.unix(lb.taken_at_timestamp).format("h:mm A dddd MMMM Do YYYY")}${place}`)
                 .setAuthor(`${lb.owner.username} ${verify}`, lb.owner.profile_pic_url, `https://www.instagram.com/${lb.owner.username}/`)
@@ -327,11 +319,24 @@ module.exports = async (client, message) => {
       }
           let currentPage = 0;
           const embeds = generateLBembed(openData)
-          const queueEmbed = await message.channel.send(`Current Picture: ${currentPage+1}/${embeds.length}`, embeds[currentPage]);
+          let queueEmbed;
+          // if the first object in the array is a photo
+          if (typeof embeds[currentPage][1] == 'undefined') {
+            queueEmbed = await message.channel.send(`Current Picture: ${currentPage+1}/${embeds.length}`, embeds[currentPage]);
+          }
+          // if the first object in the array is a video
+          if (typeof embeds[currentPage][1] != 'undefined') {
+            queueEmbed = await message.channel.send(`Current Video: ${currentPage+1}/${embeds.length}`, embeds[currentPage]);
+            const response = await fetch(embeds[currentPage][1], {
+              method: 'GET'
+            })
+            const buffer = await response.buffer()
+            await message.channel.send(new Discord.MessageAttachment(buffer, 'video.mp4'))
+          }
           await queueEmbed.react('⬅️');
           await queueEmbed.react('➡️');
           await queueEmbed.react('❌');
-          queueEmbed.edit()
+          queueEmbed.edit();
           const filter = (reaction, user) => ['⬅️', '➡️', '❌'].includes(reaction.emoji.name) && (message.author.id === user.id);
           const collector = queueEmbed.createReactionCollector(filter);
 
@@ -339,15 +344,19 @@ module.exports = async (client, message) => {
                 if (reaction.emoji.name === '➡️') {
                     if (currentPage < embeds.length-1) {
                       currentPage++; // change page
+                      // if the current page doesn't have a video
                       if (typeof embeds[currentPage][1] == 'undefined') {
                         reaction.users.remove(user);
                         queueEmbed.edit(`Current Picture: ${currentPage+1}/${embeds.length}`, embeds[currentPage]);
+                        // if the last page has a video
                         if (typeof embeds[currentPage-1][1] != 'undefined') {
                           await message.channel.messages.fetch({ limit: 1 }).then(messages => { 
                             message.channel.bulkDelete(messages)});
                         }
                       }
+                      // if the current page has a video
                       if (typeof embeds[currentPage][1] != 'undefined') {
+                        // if the last page has a video
                         if (typeof embeds[currentPage-1][1] != 'undefined') {
                           await message.channel.messages.fetch({ limit: 1 }).then(messages => { 
                             message.channel.bulkDelete(messages)});
@@ -363,16 +372,20 @@ module.exports = async (client, message) => {
                     } 
                   } else if (reaction.emoji.name === '⬅️') {
                     if (currentPage !== 0) {
-                      --currentPage;
+                      --currentPage; // change page
+                      // if the current page doesn't have a video
                       if (typeof embeds[currentPage][1] == 'undefined') {
                         reaction.users.remove(user);
                         queueEmbed.edit(`Current Picture ${currentPage+1}/${embeds.length}`, embeds[currentPage])
+                        // if the last page has a video
                         if (typeof embeds[currentPage+1][1] != 'undefined') {
                           await message.channel.messages.fetch({ limit: 1 }).then(messages => { 
                             message.channel.bulkDelete(messages)});
                         }
                       }
+                      // if the current page has a video
                       if (typeof embeds[currentPage][1] != 'undefined') {
+                        // if the last page has a video
                         if (typeof embeds[currentPage+1][1] != 'undefined') {
                           await message.channel.messages.fetch({ limit: 1 }).then(messages => { 
                             message.channel.bulkDelete(messages)});
@@ -383,7 +396,7 @@ module.exports = async (client, message) => {
                           method: 'GET'
                         })
                         const buffer = await response.buffer()
-                        await message.channel.send(new Discord.MessageAttachment(buffer, 'video.mp4')).then()
+                        await message.channel.send(new Discord.MessageAttachment(buffer, 'video.mp4'))
                       }
                     }
                   } else {
