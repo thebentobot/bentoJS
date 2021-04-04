@@ -314,7 +314,7 @@ module.exports = async (client, message) => {
                 .setDescription(trim(markdownEscape(lb.edge_media_to_caption.edges[0].node.text), 2048))
                 .setColor(process.env.COLOR)
                 //.setImage
-                .addField('Video link', `[Click here](${current.node.video_url})`)
+                //.addField('Video link', `[Click here](${current.node.video_url})`)
                 .setTitle(`${markdownEscape(lb.owner.full_name)}`)
                 .setFooter(`${moment.unix(lb.taken_at_timestamp).format("h:mm A dddd MMMM Do YYYY")}${place}`)
                 .setAuthor(`${lb.owner.username} ${verify}`, lb.owner.profile_pic_url, `https://www.instagram.com/${lb.owner.username}/`)
@@ -325,63 +325,73 @@ module.exports = async (client, message) => {
           }
           return embeds;
       }
-        
           let currentPage = 0;
           const embeds = generateLBembed(openData)
-          // if one of the objects in the embed contains two objects in an array (embed, video) - it should post it as two messages??
-          // is the above the solution to the video problem?
-          console.log([[embeds]])
-          // embeds[2][1] sends the exact url, how can i automate this progress?
-          console.log('testing :D : ' + embeds[2][1])
-          // takes the url from the extra object for the third embed, and then uses the url
-          // it is only possible to use this function below in this scope, it isn't possible in the generateLBembed function because of it's sync scope, it isn't an async scope
-
-          const response = await fetch(embeds[2][1], {
-            method: 'GET'
-          })
-          const buffer = await response.buffer()
-          // we could make the await buffer below an object, and perhaps we could somehow automate (in the code below), that if the embed page has a video, it sends this
-          // if we do implement that successfully (perhaps similar to the 1 video function above),
-          // we will need to delete the whole embed and resend it from the page the user changes it to (where it's possible to switch)
-          // it should be possible with the arrows below, somehow check if the embeds[currentPage] has two objects, and if so, it posts the video
-
-          // if there's more than two videos, perhaps we need to automate the fetch/buffer down in the collector.on perhaps, because it can't be automate in this scope or?
-          await message.channel.send(new Discord.MessageAttachment(buffer, 'video.mp4'))
-
           const queueEmbed = await message.channel.send(`Current Picture: ${currentPage+1}/${embeds.length}`, embeds[currentPage]);
-            await queueEmbed.react('⬅️');
-            await queueEmbed.react('➡️');
-            await queueEmbed.react('❌');
-            const filter = (reaction, user) => ['⬅️', '➡️', '❌'].includes(reaction.emoji.name) && (message.author.id === user.id);
-            const collector = queueEmbed.createReactionCollector(filter);
+          await queueEmbed.react('⬅️');
+          await queueEmbed.react('➡️');
+          await queueEmbed.react('❌');
+          queueEmbed.edit()
+          const filter = (reaction, user) => ['⬅️', '➡️', '❌'].includes(reaction.emoji.name) && (message.author.id === user.id);
+          const collector = queueEmbed.createReactionCollector(filter);
 
             collector.on('collect', async (reaction, user) => {
                 if (reaction.emoji.name === '➡️') {
                     if (currentPage < embeds.length-1) {
-                      currentPage++;
-                      reaction.users.remove(user);
-                      queueEmbed.edit(`Current Picture: ${currentPage+1}/${embeds.length}`, embeds[currentPage]);
+                      currentPage++; // change page
+                      if (typeof embeds[currentPage][1] == 'undefined') {
+                        reaction.users.remove(user);
+                        queueEmbed.edit(`Current Picture: ${currentPage+1}/${embeds.length}`, embeds[currentPage]);
+                        if (typeof embeds[currentPage-1][1] != 'undefined') {
+                          await message.channel.messages.fetch({ limit: 1 }).then(messages => { 
+                            message.channel.bulkDelete(messages)});
+                        }
+                      }
+                      if (typeof embeds[currentPage][1] != 'undefined') {
+                        if (typeof embeds[currentPage-1][1] != 'undefined') {
+                          await message.channel.messages.fetch({ limit: 1 }).then(messages => { 
+                            message.channel.bulkDelete(messages)});
+                        }
+                        reaction.users.remove(user);
+                        queueEmbed.edit(`Current Video: ${currentPage+1}/${embeds.length}`, embeds[currentPage]);
+                        const response = await fetch(embeds[currentPage][1], {
+                          method: 'GET'
+                        })
+                        const buffer = await response.buffer()
+                        await message.channel.send(new Discord.MessageAttachment(buffer, 'video.mp4'))
+                      }
                     } 
                   } else if (reaction.emoji.name === '⬅️') {
                     if (currentPage !== 0) {
                       --currentPage;
-                      reaction.users.remove(user);
-                      queueEmbed.edit(`Current Picture ${currentPage+1}/${embeds.length}`, embeds[currentPage]);
+                      if (typeof embeds[currentPage][1] == 'undefined') {
+                        reaction.users.remove(user);
+                        queueEmbed.edit(`Current Picture ${currentPage+1}/${embeds.length}`, embeds[currentPage])
+                        if (typeof embeds[currentPage+1][1] != 'undefined') {
+                          await message.channel.messages.fetch({ limit: 1 }).then(messages => { 
+                            message.channel.bulkDelete(messages)});
+                        }
+                      }
+                      if (typeof embeds[currentPage][1] != 'undefined') {
+                        if (typeof embeds[currentPage+1][1] != 'undefined') {
+                          await message.channel.messages.fetch({ limit: 1 }).then(messages => { 
+                            message.channel.bulkDelete(messages)});
+                        }
+                        reaction.users.remove(user);
+                        queueEmbed.edit(`Current Video ${currentPage+1}/${embeds.length}`, embeds[currentPage])
+                        const response = await fetch(embeds[currentPage][1], {
+                          method: 'GET'
+                        })
+                        const buffer = await response.buffer()
+                        await message.channel.send(new Discord.MessageAttachment(buffer, 'video.mp4')).then()
+                      }
                     }
                   } else {
                     collector.stop();
                     await queueEmbed.delete();
                   }
             })
-        
       }
-      
-      // generate a function that decides if one node = video or image
-      // if it does contain video, it needs to yeh, do something special with the video
-      // perhaps we need to check at the start of the code, for each content
-      // kinda like case?
-      // if case 1 video 2 pics then, if case 0 video 2 pics etc.
-    //end
     }
 
     const prefix = settings.prefix;
