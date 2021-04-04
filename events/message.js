@@ -347,15 +347,19 @@ module.exports = async (client, message) => {
                                 // if the last page has a video
                                 if (typeof embeds[currentPage-1][1] != 'undefined') {
                                   await message.channel.messages.fetch({ limit: 1 }).then(messages => { 
-                                    message.channel.bulkDelete(messages)});
+                                    const botMessages = [];
+                                    messages.filter(m => m.author.id === '787041583580184609').forEach(msg => botMessages.push(msg))
+                                    message.channel.bulkDelete(botMessages)});
                                 }
                               }
                               // if the current page has a video
                               if (typeof embeds[currentPage][1] != 'undefined') {
                                 // if the last page has a video
                                 if (typeof embeds[currentPage-1][1] != 'undefined') {
-                                  await message.channel.messages.fetch({ limit: 1 }).then(messages => { 
-                                    message.channel.bulkDelete(messages)});
+                                  await message.channel.messages.fetch({ limit: 1 }).then(messages => {
+                                    const botMessages = [];
+                                    messages.filter(m => m.author.id === '787041583580184609').forEach(msg => botMessages.push(msg))
+                                    message.channel.bulkDelete(botMessages)});
                                 }
                                 reaction.users.remove(user);
                                 queueEmbed.edit(`Current Video: ${currentPage+1}/${embeds.length}`, embeds[currentPage]);
@@ -376,7 +380,9 @@ module.exports = async (client, message) => {
                                 // if the last page has a video
                                 if (typeof embeds[currentPage+1][1] != 'undefined') {
                                   await message.channel.messages.fetch({ limit: 1 }).then(messages => { 
-                                    message.channel.bulkDelete(messages)});
+                                    const botMessages = [];
+                                    messages.filter(m => m.author.id === '787041583580184609').forEach(msg => botMessages.push(msg))
+                                    message.channel.bulkDelete(botMessages)});
                                 }
                               }
                               // if the current page has a video
@@ -384,7 +390,9 @@ module.exports = async (client, message) => {
                                 // if the last page has a video
                                 if (typeof embeds[currentPage+1][1] != 'undefined') {
                                   await message.channel.messages.fetch({ limit: 1 }).then(messages => { 
-                                    message.channel.bulkDelete(messages)});
+                                    const botMessages = [];
+                                    messages.filter(m => m.author.id === '787041583580184609').forEach(msg => botMessages.push(msg))
+                                    message.channel.bulkDelete(botMessages)});
                                 }
                                 reaction.users.remove(user);
                                 queueEmbed.edit(`Current Video ${currentPage+1}/${embeds.length}`, embeds[currentPage])
@@ -400,7 +408,9 @@ module.exports = async (client, message) => {
                             await queueEmbed.delete();
                             if (typeof embeds[currentPage][1] != 'undefined') {
                               await message.channel.messages.fetch({ limit: 1 }).then(messages => { 
-                                message.channel.bulkDelete(messages)});
+                                const botMessages = [];
+                                    messages.filter(m => m.author.id === '787041583580184609').forEach(msg => botMessages.push(msg))
+                                    message.channel.bulkDelete(botMessages)});
                             }
                           }
                     })
