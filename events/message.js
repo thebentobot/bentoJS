@@ -346,7 +346,7 @@ module.exports = async (client, message) => {
                                 queueEmbed.edit(`Current Picture: ${currentPage+1}/${embeds.length}`, embeds[currentPage]);
                                 // if the last page has a video
                                 if (typeof embeds[currentPage-1][1] != 'undefined') {
-                                  await message.channel.messages.fetch({ limit: 1 }).then(messages => { 
+                                  await message.channel.messages.fetch({ limit: 5 }).then(messages => { 
                                     const botMessages = [];
                                     messages.filter(m => m.author.id === '787041583580184609').forEach(msg => botMessages.push(msg))
                                     message.channel.bulkDelete(botMessages)});
@@ -356,7 +356,7 @@ module.exports = async (client, message) => {
                               if (typeof embeds[currentPage][1] != 'undefined') {
                                 // if the last page has a video
                                 if (typeof embeds[currentPage-1][1] != 'undefined') {
-                                  await message.channel.messages.fetch({ limit: 1 }).then(messages => {
+                                  await message.channel.messages.fetch({ limit: 5 }).then(messages => {
                                     const botMessages = [];
                                     messages.filter(m => m.author.id === '787041583580184609').forEach(msg => botMessages.push(msg))
                                     message.channel.bulkDelete(botMessages)});
@@ -379,7 +379,7 @@ module.exports = async (client, message) => {
                                 queueEmbed.edit(`Current Picture ${currentPage+1}/${embeds.length}`, embeds[currentPage])
                                 // if the last page has a video
                                 if (typeof embeds[currentPage+1][1] != 'undefined') {
-                                  await message.channel.messages.fetch({ limit: 1 }).then(messages => { 
+                                  await message.channel.messages.fetch({ limit: 5 }).then(messages => { 
                                     const botMessages = [];
                                     messages.filter(m => m.author.id === '787041583580184609').forEach(msg => botMessages.push(msg))
                                     message.channel.bulkDelete(botMessages)});
@@ -389,7 +389,7 @@ module.exports = async (client, message) => {
                               if (typeof embeds[currentPage][1] != 'undefined') {
                                 // if the last page has a video
                                 if (typeof embeds[currentPage+1][1] != 'undefined') {
-                                  await message.channel.messages.fetch({ limit: 1 }).then(messages => { 
+                                  await message.channel.messages.fetch({ limit: 5 }).then(messages => { 
                                     const botMessages = [];
                                     messages.filter(m => m.author.id === '787041583580184609').forEach(msg => botMessages.push(msg))
                                     message.channel.bulkDelete(botMessages)});
@@ -407,7 +407,7 @@ module.exports = async (client, message) => {
                             collector.stop();
                             await queueEmbed.delete();
                             if (typeof embeds[currentPage][1] != 'undefined') {
-                              await message.channel.messages.fetch({ limit: 1 }).then(messages => { 
+                              await message.channel.messages.fetch({ limit: 5 }).then(messages => { 
                                 const botMessages = [];
                                     messages.filter(m => m.author.id === '787041583580184609').forEach(msg => botMessages.push(msg))
                                     message.channel.bulkDelete(botMessages)});
