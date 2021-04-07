@@ -1,6 +1,6 @@
 [Link to the Discord Support server](https://discord.gg/dd68WwP)
 
-A link to invite the bot to a Discord server will be provided when I feel like it's ready for public use.
+A link to invite the bot to a Discord server will be provided when I feel like it's ready for public use. If you ask nicely you may get a link while it's being developed, by contacting me on Github or Discord (Banner#1017)
 # Bento Bot 🍱 (WIP)
 A Discord bot with server moderation tools and various entertaining commands.
 
