@@ -195,7 +195,9 @@ module.exports = async (client, message) => {
               const query = testString.match(/\bhttps?:\/\/\S+/gi);
               //const finalQuery = query[0]
               //console.log(finalQuery)
-              const videoMeta = await TikTokScraper.getVideoMeta(query)
+              const videoMeta = await TikTokScraper.getVideoMeta(query, {
+                proxyFile: '../utils/proxy-list-raw.txt' 
+              })
               const video = videoMeta.collector[0];
               //console.log(video)
               const videoURL = video.videoUrl
@@ -222,8 +224,6 @@ module.exports = async (client, message) => {
               if (settings.instagram == 'disable') {
                 return
               }
-              let hours = (new Date()).getHours();
-              console.log('The current hour is: ' + hours);
               let checkUrl = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/
               if (checkUrl.test(message) == false) {
                 return
@@ -231,10 +231,15 @@ module.exports = async (client, message) => {
               let testString = message.content
               const query = testString.match(/\bhttps?:\/\/\S+/gi);
               const finalQuery = query[0]
-              const data = await InstagramScraper.getPostMeta(finalQuery, 
+              //console.log(finalQuery)
+              const sliceQuery = finalQuery.substr(0, finalQuery.lastIndexOf("/") + 1);
+              console.log(sliceQuery)
+              const data = await InstagramScraper.getPostMeta(sliceQuery, 
                 {
-                  session:`sessionid=${process.env.IGsessionID}`
+                  session:`sessionid=${process.env.IGsessionID}`,
+                  proxyFile: '../utils/proxy-list-raw.txt'
                 })
+              console.log(data)
               const openData = data.graphql.shortcode_media
               let place = await openData.location ? `, ${await openData.location.name}` : ''
               let verify = await openData.owner.is_verified ? '✅' : ''
