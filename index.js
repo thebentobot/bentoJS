@@ -3,12 +3,19 @@ const { config } = require('dotenv');
 const fs = require('fs');
 const mongoose = require('mongoose');
 const client = new Client();
+const schedule = require('node-schedule');
 
 client.commands = new Collection();
 client.aliases = new Collection();
 client.mongoose = require('./utils/mongoose');
 
 client.categories = fs.readdirSync('./commands/');
+
+// fun feature for the boys
+schedule.scheduleJob('10 29 19 * * *', function(){
+    client.channels.cache.get('668454896051159070').send('https://cdn.discordapp.com/attachments/802924837462999040/830465878474358854/v09044e00000c1cpjtd5o3sjgfc2blr0.mp4')
+    console.log('Så er klokken snart halv otte ahaha')
+  });
 
 config({
     path: `${__dirname}/.env`
