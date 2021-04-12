@@ -19,6 +19,7 @@
     "country-emoji": "^1.5.6",
     "discord.js": "^12.5.3",
     "dotenv": "^8.2.0",
+    "ffmpeg-static": "^4.3.0",
     "fs": "0.0.1-security",
     "g-i-s": "^2.1.6",
     "instatouch": "^2.3.3",
