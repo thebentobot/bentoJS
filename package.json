@@ -12,6 +12,7 @@
   "author": "",
   "license": "AGPL-3.0-or-later",
   "dependencies": {
+    "@discordjs/opus": "^0.5.0",
     "ascii-table": "0.0.9",
     "aztro-js": "^0.1.5",
     "cheerio": "^1.0.0-rc.6",
@@ -27,8 +28,10 @@
     "moment-timezone": "^0.5.33",
     "mongoose": "^5.12.3",
     "node-fetch": "^2.6.1",
+    "node-opus": "^0.3.3",
     "node-schedule": "^2.0.0",
     "nodemon": "^2.0.7",
+    "opusscript": "0.0.8",
     "querystring": "^0.2.1",
     "request": "^2.88.2",
     "string-to-color": "^2.2.2",
