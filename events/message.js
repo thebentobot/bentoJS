@@ -232,12 +232,18 @@ module.exports = async (client, message) => {
               //console.log(finalQuery)
               const sliceQuery = finalQuery.substr(0, finalQuery.lastIndexOf("/") + 1);
               //console.log(sliceQuery)
-              const proxy = [process.env.PROXY]
+              //const proxy = [process.env.PROXY]
               const options = { session:`sessionid=${process.env.IGsessionID}`,
-              proxy}
-              const data = await InstagramScraper.getPostMeta(sliceQuery, 
+              }
+              let data;
+              try {
+                data = await InstagramScraper.getPostMeta(sliceQuery, 
                 options)
-              //console.log(data)
+
+              } catch {
+                throw 'IG blocked'
+              }
+                            //console.log(data)
               const openData = data.graphql.shortcode_media
               let place = await openData.location ? `, ${await openData.location.name}` : ''
               let verify = await openData.owner.is_verified ? '✅' : ''
